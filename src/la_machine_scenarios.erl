@@ -43,6 +43,12 @@
 	scenario_calling_00467/0,
 	scenario_calling_00557/0,
 	scenario_calling_00573/0,
+	scenario_calling_00592/0,
+	scenario_calling_00643/0,
+	scenario_calling_00919/0,
+	scenario_calling_01059/0,
+	scenario_calling_01072/0,
+	scenario_calling_01219/0,
 	scenario_excited_00188/0,
 	scenario_excited_00425/0,
 	scenario_excited_00438/0,
@@ -61,52 +67,129 @@
 	scenario_excited_01062/0,
 	scenario_excited_01067/0,
 	scenario_excited_01088/0,
-	scenario_game_00642/0,
-	scenario_game_00671/0,
-	scenario_game_00696/0,
-	scenario_game_00707/0,
-	scenario_game_00879/0,
-	scenario_game_00880/0,
-	scenario_game_00886/0,
-	scenario_game_00961/0,
-	scenario_game_00992/0,
-	scenario_game_01000/0,
-	scenario_game_01004/0,
-	scenario_game_01065/0,
-	scenario_game_01120/0,
-	scenario_game_01257/0,
-	scenario_game_01258/0,
-	scenario_game_01300/0,
-	scenario_game_01303/0,
-	scenario_game_01408/0,
-	scenario_game_01409/0,
-	scenario_game_01427/0,
-	scenario_game_01439/0,
-	scenario_game_01452/0,
-	scenario_game_01477/0,
-	scenario_game_02388/0,
-	scenario_game_02525/0,
-	scenario_game_02537/0,
-	scenario_game_02686/0,
-	scenario_game_02821/0,
-	scenario_game_02865/0,
-	scenario_game_02907/0,
-	scenario_game_02933/0,
-	scenario_game_03018/0,
-	scenario_game_03063/0,
-	scenario_game_03077/0,
-	scenario_game_03079/0,
-	scenario_game_03130/0,
-	scenario_game_03147/0,
-	scenario_game_03149/0,
-	scenario_game_03223/0,
-	scenario_game_03385/0,
-	scenario_game_03765/0,
-	scenario_game_04086/0,
-	scenario_game_04239/0,
-	scenario_game_04843/0,
-	scenario_game_04933/0,
-	scenario_game_05030/0,
+	scenario_excited_01100/0,
+	scenario_excited_01135/0,
+	scenario_excited_01147/0,
+	scenario_excited_01186/0,
+	scenario_excited_01194/0,
+	scenario_excited_01201/0,
+	scenario_excited_01221/0,
+	scenario_excited_01230/0,
+	scenario_excited_01238/0,
+	scenario_excited_01280/0,
+	scenario_excited_01318/0,
+	scenario_excited_01327/0,
+	scenario_excited_01340/0,
+	scenario_excited_01356/0,
+	scenario_excited_01406/0,
+	scenario_excited_01413/0,
+	scenario_excited_01462/0,
+	scenario_excited_01494/0,
+	scenario_excited_01502/0,
+	scenario_excited_01511/0,
+	scenario_excited_01537/0,
+	scenario_excited_01552/0,
+	scenario_excited_01572/0,
+	scenario_excited_01574/0,
+	scenario_excited_01580/0,
+	scenario_excited_01650/0,
+	scenario_excited_01652/0,
+	scenario_excited_01698/0,
+	scenario_excited_01744/0,
+	scenario_excited_01789/0,
+	scenario_excited_01795/0,
+	scenario_excited_02044/0,
+	scenario_excited_02137/0,
+	scenario_excited_02334/0,
+	scenario_excited_02397/0,
+	scenario_game_short_00642/0,
+	scenario_game_short_00671/0,
+	scenario_game_short_00696/0,
+	scenario_game_short_00707/0,
+	scenario_game_short_00879/0,
+	scenario_game_short_00880/0,
+	scenario_game_short_00886/0,
+	scenario_game_short_00961/0,
+	scenario_game_short_00992/0,
+	scenario_game_short_01000/0,
+	scenario_game_short_01004/0,
+	scenario_game_short_01065/0,
+	scenario_game_short_01120/0,
+	scenario_game_short_01257/0,
+	scenario_game_short_01258/0,
+	scenario_game_short_01300/0,
+	scenario_game_short_01303/0,
+	scenario_game_short_01408/0,
+	scenario_game_short_01409/0,
+	scenario_game_short_01427/0,
+	scenario_game_short_01439/0,
+	scenario_game_short_01452/0,
+	scenario_game_short_01477/0,
+	scenario_game_short_01480/0,
+	scenario_game_short_01487/0,
+	scenario_game_short_01498/0,
+	scenario_game_short_01503/0,
+	scenario_game_short_01512/0,
+	scenario_game_short_01609/0,
+	scenario_game_short_01629/0,
+	scenario_game_short_01646/0,
+	scenario_game_short_01651/0,
+	scenario_game_short_01673/0,
+	scenario_game_short_01708/0,
+	scenario_game_short_01723/0,
+	scenario_game_short_01727/0,
+	scenario_game_short_01728/0,
+	scenario_game_short_01734/0,
+	scenario_game_short_01742/0,
+	scenario_game_short_01750/0,
+	scenario_game_medium_01767/0,
+	scenario_game_medium_01802/0,
+	scenario_game_medium_01827/0,
+	scenario_game_medium_01847/0,
+	scenario_game_medium_01878/0,
+	scenario_game_medium_01883/0,
+	scenario_game_medium_01891/0,
+	scenario_game_medium_01920/0,
+	scenario_game_medium_01952/0,
+	scenario_game_medium_01974/0,
+	scenario_game_medium_01996/0,
+	scenario_game_medium_02059/0,
+	scenario_game_medium_02069/0,
+	scenario_game_medium_02081/0,
+	scenario_game_medium_02090/0,
+	scenario_game_medium_02113/0,
+	scenario_game_medium_02125/0,
+	scenario_game_medium_02139/0,
+	scenario_game_medium_02151/0,
+	scenario_game_medium_02168/0,
+	scenario_game_medium_02220/0,
+	scenario_game_medium_02364/0,
+	scenario_game_medium_02365/0,
+	scenario_game_medium_02375/0,
+	scenario_game_medium_02384/0,
+	scenario_game_medium_02388/0,
+	scenario_game_medium_02525/0,
+	scenario_game_medium_02537/0,
+	scenario_game_medium_02686/0,
+	scenario_game_medium_02821/0,
+	scenario_game_medium_02865/0,
+	scenario_game_medium_02907/0,
+	scenario_game_medium_02933/0,
+	scenario_game_medium_03018/0,
+	scenario_game_medium_03063/0,
+	scenario_game_medium_03077/0,
+	scenario_game_medium_03079/0,
+	scenario_game_medium_03130/0,
+	scenario_game_medium_03147/0,
+	scenario_game_medium_03149/0,
+	scenario_game_medium_03223/0,
+	scenario_game_medium_03385/0,
+	scenario_game_long_03765/0,
+	scenario_game_long_04086/0,
+	scenario_game_long_04239/0,
+	scenario_game_long_04843/0,
+	scenario_game_long_04933/0,
+	scenario_game_long_05030/0,
 	scenario_hits_00082/0,
 	scenario_hits_00117/0,
 	scenario_hits_00155/0,
@@ -122,6 +205,112 @@
 	scenario_hits_00235/0,
 	scenario_hits_00247/0,
 	scenario_hits_00249/0,
+	scenario_hits_00255/0,
+	scenario_hits_00280/0,
+	scenario_hits_00281/0,
+	scenario_hits_00313/0,
+	scenario_hits_00315/0,
+	scenario_hits_00318/0,
+	scenario_hits_00321/0,
+	scenario_hits_00325/0,
+	scenario_hits_00328/0,
+	scenario_hits_00329/0,
+	scenario_hits_00337/0,
+	scenario_hits_00341/0,
+	scenario_hits_00349/0,
+	scenario_hits_00350/0,
+	scenario_hits_00360/0,
+	scenario_hits_00364/0,
+	scenario_hits_00368/0,
+	scenario_hits_00384/0,
+	scenario_hits_00389/0,
+	scenario_hits_00390/0,
+	scenario_hits_00407/0,
+	scenario_hits_00413/0,
+	scenario_hits_00415/0,
+	scenario_hits_00430/0,
+	scenario_hits_00433/0,
+	scenario_hits_00441/0,
+	scenario_hits_00446/0,
+	scenario_hits_00451/0,
+	scenario_hits_00454/0,
+	scenario_hits_00458/0,
+	scenario_hits_00469/0,
+	scenario_hits_00474/0,
+	scenario_hits_00475/0,
+	scenario_hits_00477/0,
+	scenario_hits_00489/0,
+	scenario_hits_00501/0,
+	scenario_hits_00502/0,
+	scenario_hits_00505/0,
+	scenario_hits_00512/0,
+	scenario_hits_00520/0,
+	scenario_hits_00522/0,
+	scenario_hits_00536/0,
+	scenario_hits_00545/0,
+	scenario_hits_00546/0,
+	scenario_hits_00552/0,
+	scenario_hits_00559/0,
+	scenario_hits_00560/0,
+	scenario_hits_00561/0,
+	scenario_hits_00563/0,
+	scenario_hits_00565/0,
+	scenario_hits_00568/0,
+	scenario_hits_00580/0,
+	scenario_hits_00591/0,
+	scenario_hits_00605/0,
+	scenario_hits_00615/0,
+	scenario_hits_00621/0,
+	scenario_hits_00624/0,
+	scenario_hits_00637/0,
+	scenario_hits_00659/0,
+	scenario_hits_00667/0,
+	scenario_hits_00684/0,
+	scenario_hits_00685/0,
+	scenario_hits_00688/0,
+	scenario_hits_00689/0,
+	scenario_hits_00692/0,
+	scenario_hits_00705/0,
+	scenario_hits_00710/0,
+	scenario_hits_00712/0,
+	scenario_hits_00714/0,
+	scenario_hits_00717/0,
+	scenario_hits_00718/0,
+	scenario_hits_00727/0,
+	scenario_hits_00755/0,
+	scenario_hits_00756/0,
+	scenario_hits_00769/0,
+	scenario_hits_00775/0,
+	scenario_hits_00776/0,
+	scenario_hits_00778/0,
+	scenario_hits_00784/0,
+	scenario_hits_00796/0,
+	scenario_hits_00797/0,
+	scenario_hits_00802/0,
+	scenario_hits_00813/0,
+	scenario_hits_00820/0,
+	scenario_hits_00828/0,
+	scenario_hits_00831/0,
+	scenario_hits_00840/0,
+	scenario_hits_00844/0,
+	scenario_hits_00860/0,
+	scenario_hits_00871/0,
+	scenario_hits_00880/0,
+	scenario_hits_00883/0,
+	scenario_hits_00890/0,
+	scenario_hits_00895/0,
+	scenario_hits_00896/0,
+	scenario_hits_00897/0,
+	scenario_hits_00900/0,
+	scenario_hits_00905/0,
+	scenario_hits_00918/0,
+	scenario_hits_00919/0,
+	scenario_hits_00925/0,
+	scenario_hits_00932/0,
+	scenario_hits_00933/0,
+	scenario_hits_00938/0,
+	scenario_hits_00953/0,
+	scenario_hits_00966/0,
 	scenario_hits_00973/0,
 	scenario_hits_00977/0,
 	scenario_hits_00990/0,
@@ -188,6 +377,26 @@
 	scenario_joy_01526/0,
 	scenario_joy_01548/0,
 	scenario_joy_01554/0,
+	scenario_joy_01558/0,
+	scenario_joy_01647/0,
+	scenario_joy_01653/0,
+	scenario_joy_01683/0,
+	scenario_joy_01709/0,
+	scenario_joy_01716/0,
+	scenario_joy_01740/0,
+	scenario_joy_01743/0,
+	scenario_joy_01776/0,
+	scenario_joy_01781/0,
+	scenario_joy_01787/0,
+	scenario_joy_01816/0,
+	scenario_joy_01819/0,
+	scenario_joy_01824/0,
+	scenario_joy_01827/0,
+	scenario_joy_01828/0,
+	scenario_joy_01833/0,
+	scenario_joy_01877/0,
+	scenario_joy_01889/0,
+	scenario_joy_01906/0,
 	scenario_joy_01961/0,
 	scenario_joy_02028/0,
 	scenario_joy_02033/0,
@@ -231,6 +440,30 @@
 	scenario_tired_01582/0,
 	scenario_tired_01583/0,
 	scenario_tired_01607/0,
+	scenario_tired_01645/0,
+	scenario_tired_01742/0,
+	scenario_tired_01778/0,
+	scenario_tired_01794/0,
+	scenario_tired_01798/0,
+	scenario_tired_01836/0,
+	scenario_tired_01859/0,
+	scenario_tired_01893/0,
+	scenario_tired_01952/0,
+	scenario_tired_01960/0,
+	scenario_tired_01980/0,
+	scenario_tired_02015/0,
+	scenario_tired_02114/0,
+	scenario_tired_02146/0,
+	scenario_tired_02173/0,
+	scenario_tired_02234/0,
+	scenario_tired_02255/0,
+	scenario_tired_02276/0,
+	scenario_tired_02301/0,
+	scenario_tired_02308/0,
+	scenario_tired_02314/0,
+	scenario_tired_02330/0,
+	scenario_tired_02421/0,
+	scenario_tired_02467/0,
 	scenario_tired_02519/0,
 	scenario_tired_02523/0,
 	scenario_tired_02550/0,
@@ -263,6 +496,26 @@
 	scenario_upset_00878/0,
 	scenario_upset_00930/0,
 	scenario_upset_00968/0,
+	scenario_upset_00984/0,
+	scenario_upset_01015/0,
+	scenario_upset_01042/0,
+	scenario_upset_01070/0,
+	scenario_upset_01081/0,
+	scenario_upset_01171/0,
+	scenario_upset_01263/0,
+	scenario_upset_01270/0,
+	scenario_upset_01303/0,
+	scenario_upset_01312/0,
+	scenario_upset_01330/0,
+	scenario_upset_01333/0,
+	scenario_upset_01340/0,
+	scenario_upset_01342/0,
+	scenario_upset_01386/0,
+	scenario_upset_01390/0,
+	scenario_upset_01419/0,
+	scenario_upset_01468/0,
+	scenario_upset_01485/0,
+	scenario_upset_01509/0,
 	scenario_upset_01559/0,
 	scenario_upset_01583/0,
 	scenario_upset_01594/0,
@@ -415,6 +668,36 @@ scenario_calling_00573() ->
 		{aac, <<"calling/00573.aac">>}
 	].
 
+scenario_calling_00592() ->
+	[
+		{aac, <<"calling/00592.aac">>}
+	].
+
+scenario_calling_00643() ->
+	[
+		{aac, <<"calling/00643.aac">>}
+	].
+
+scenario_calling_00919() ->
+	[
+		{aac, <<"calling/00919.aac">>}
+	].
+
+scenario_calling_01059() ->
+	[
+		{aac, <<"calling/01059.aac">>}
+	].
+
+scenario_calling_01072() ->
+	[
+		{aac, <<"calling/01072.aac">>}
+	].
+
+scenario_calling_01219() ->
+	[
+		{aac, <<"calling/01219.aac">>}
+	].
+
 scenario_excited_00188() ->
 	[
 		{aac, <<"excited/00188.aac">>}
@@ -505,232 +788,617 @@ scenario_excited_01088() ->
 		{aac, <<"excited/01088.aac">>}
 	].
 
-scenario_game_00642() ->
+scenario_excited_01100() ->
+	[
+		{aac, <<"excited/01100.aac">>}
+	].
+
+scenario_excited_01135() ->
+	[
+		{aac, <<"excited/01135.aac">>}
+	].
+
+scenario_excited_01147() ->
+	[
+		{aac, <<"excited/01147.aac">>}
+	].
+
+scenario_excited_01186() ->
+	[
+		{aac, <<"excited/01186.aac">>}
+	].
+
+scenario_excited_01194() ->
+	[
+		{aac, <<"excited/01194.aac">>}
+	].
+
+scenario_excited_01201() ->
+	[
+		{aac, <<"excited/01201.aac">>}
+	].
+
+scenario_excited_01221() ->
+	[
+		{aac, <<"excited/01221.aac">>}
+	].
+
+scenario_excited_01230() ->
+	[
+		{aac, <<"excited/01230.aac">>}
+	].
+
+scenario_excited_01238() ->
+	[
+		{aac, <<"excited/01238.aac">>}
+	].
+
+scenario_excited_01280() ->
+	[
+		{aac, <<"excited/01280.aac">>}
+	].
+
+scenario_excited_01318() ->
+	[
+		{aac, <<"excited/01318.aac">>}
+	].
+
+scenario_excited_01327() ->
+	[
+		{aac, <<"excited/01327.aac">>}
+	].
+
+scenario_excited_01340() ->
+	[
+		{aac, <<"excited/01340.aac">>}
+	].
+
+scenario_excited_01356() ->
+	[
+		{aac, <<"excited/01356.aac">>}
+	].
+
+scenario_excited_01406() ->
+	[
+		{aac, <<"excited/01406.aac">>}
+	].
+
+scenario_excited_01413() ->
+	[
+		{aac, <<"excited/01413.aac">>}
+	].
+
+scenario_excited_01462() ->
+	[
+		{aac, <<"excited/01462.aac">>}
+	].
+
+scenario_excited_01494() ->
+	[
+		{aac, <<"excited/01494.aac">>}
+	].
+
+scenario_excited_01502() ->
+	[
+		{aac, <<"excited/01502.aac">>}
+	].
+
+scenario_excited_01511() ->
+	[
+		{aac, <<"excited/01511.aac">>}
+	].
+
+scenario_excited_01537() ->
+	[
+		{aac, <<"excited/01537.aac">>}
+	].
+
+scenario_excited_01552() ->
+	[
+		{aac, <<"excited/01552.aac">>}
+	].
+
+scenario_excited_01572() ->
+	[
+		{aac, <<"excited/01572.aac">>}
+	].
+
+scenario_excited_01574() ->
+	[
+		{aac, <<"excited/01574.aac">>}
+	].
+
+scenario_excited_01580() ->
+	[
+		{aac, <<"excited/01580.aac">>}
+	].
+
+scenario_excited_01650() ->
+	[
+		{aac, <<"excited/01650.aac">>}
+	].
+
+scenario_excited_01652() ->
+	[
+		{aac, <<"excited/01652.aac">>}
+	].
+
+scenario_excited_01698() ->
+	[
+		{aac, <<"excited/01698.aac">>}
+	].
+
+scenario_excited_01744() ->
+	[
+		{aac, <<"excited/01744.aac">>}
+	].
+
+scenario_excited_01789() ->
+	[
+		{aac, <<"excited/01789.aac">>}
+	].
+
+scenario_excited_01795() ->
+	[
+		{aac, <<"excited/01795.aac">>}
+	].
+
+scenario_excited_02044() ->
+	[
+		{aac, <<"excited/02044.aac">>}
+	].
+
+scenario_excited_02137() ->
+	[
+		{aac, <<"excited/02137.aac">>}
+	].
+
+scenario_excited_02334() ->
+	[
+		{aac, <<"excited/02334.aac">>}
+	].
+
+scenario_excited_02397() ->
+	[
+		{aac, <<"excited/02397.aac">>}
+	].
+
+scenario_game_short_00642() ->
 	[
 		{aac, <<"game/00642.aac">>}
 	].
 
-scenario_game_00671() ->
+scenario_game_short_00671() ->
 	[
 		{aac, <<"game/00671.aac">>}
 	].
 
-scenario_game_00696() ->
+scenario_game_short_00696() ->
 	[
 		{aac, <<"game/00696.aac">>}
 	].
 
-scenario_game_00707() ->
+scenario_game_short_00707() ->
 	[
 		{aac, <<"game/00707.aac">>}
 	].
 
-scenario_game_00879() ->
+scenario_game_short_00879() ->
 	[
 		{aac, <<"game/00879.aac">>}
 	].
 
-scenario_game_00880() ->
+scenario_game_short_00880() ->
 	[
 		{aac, <<"game/00880.aac">>}
 	].
 
-scenario_game_00886() ->
+scenario_game_short_00886() ->
 	[
 		{aac, <<"game/00886.aac">>}
 	].
 
-scenario_game_00961() ->
+scenario_game_short_00961() ->
 	[
 		{aac, <<"game/00961.aac">>}
 	].
 
-scenario_game_00992() ->
+scenario_game_short_00992() ->
 	[
 		{aac, <<"game/00992.aac">>}
 	].
 
-scenario_game_01000() ->
+scenario_game_short_01000() ->
 	[
 		{aac, <<"game/01000.aac">>}
 	].
 
-scenario_game_01004() ->
+scenario_game_short_01004() ->
 	[
 		{aac, <<"game/01004.aac">>}
 	].
 
-scenario_game_01065() ->
+scenario_game_short_01065() ->
 	[
 		{aac, <<"game/01065.aac">>}
 	].
 
-scenario_game_01120() ->
+scenario_game_short_01120() ->
 	[
 		{aac, <<"game/01120.aac">>}
 	].
 
-scenario_game_01257() ->
+scenario_game_short_01257() ->
 	[
 		{aac, <<"game/01257.aac">>}
 	].
 
-scenario_game_01258() ->
+scenario_game_short_01258() ->
 	[
 		{aac, <<"game/01258.aac">>}
 	].
 
-scenario_game_01300() ->
+scenario_game_short_01300() ->
 	[
 		{aac, <<"game/01300.aac">>}
 	].
 
-scenario_game_01303() ->
+scenario_game_short_01303() ->
 	[
 		{aac, <<"game/01303.aac">>}
 	].
 
-scenario_game_01408() ->
+scenario_game_short_01408() ->
 	[
 		{aac, <<"game/01408.aac">>}
 	].
 
-scenario_game_01409() ->
+scenario_game_short_01409() ->
 	[
 		{aac, <<"game/01409.aac">>}
 	].
 
-scenario_game_01427() ->
+scenario_game_short_01427() ->
 	[
 		{aac, <<"game/01427.aac">>}
 	].
 
-scenario_game_01439() ->
+scenario_game_short_01439() ->
 	[
 		{aac, <<"game/01439.aac">>}
 	].
 
-scenario_game_01452() ->
+scenario_game_short_01452() ->
 	[
 		{aac, <<"game/01452.aac">>}
 	].
 
-scenario_game_01477() ->
+scenario_game_short_01477() ->
 	[
 		{aac, <<"game/01477.aac">>}
 	].
 
-scenario_game_02388() ->
+scenario_game_short_01480() ->
+	[
+		{aac, <<"game/01480.aac">>}
+	].
+
+scenario_game_short_01487() ->
+	[
+		{aac, <<"game/01487.aac">>}
+	].
+
+scenario_game_short_01498() ->
+	[
+		{aac, <<"game/01498.aac">>}
+	].
+
+scenario_game_short_01503() ->
+	[
+		{aac, <<"game/01503.aac">>}
+	].
+
+scenario_game_short_01512() ->
+	[
+		{aac, <<"game/01512.aac">>}
+	].
+
+scenario_game_short_01609() ->
+	[
+		{aac, <<"game/01609.aac">>}
+	].
+
+scenario_game_short_01629() ->
+	[
+		{aac, <<"game/01629.aac">>}
+	].
+
+scenario_game_short_01646() ->
+	[
+		{aac, <<"game/01646.aac">>}
+	].
+
+scenario_game_short_01651() ->
+	[
+		{aac, <<"game/01651.aac">>}
+	].
+
+scenario_game_short_01673() ->
+	[
+		{aac, <<"game/01673.aac">>}
+	].
+
+scenario_game_short_01708() ->
+	[
+		{aac, <<"game/01708.aac">>}
+	].
+
+scenario_game_short_01723() ->
+	[
+		{aac, <<"game/01723.aac">>}
+	].
+
+scenario_game_short_01727() ->
+	[
+		{aac, <<"game/01727.aac">>}
+	].
+
+scenario_game_short_01728() ->
+	[
+		{aac, <<"game/01728.aac">>}
+	].
+
+scenario_game_short_01734() ->
+	[
+		{aac, <<"game/01734.aac">>}
+	].
+
+scenario_game_short_01742() ->
+	[
+		{aac, <<"game/01742.aac">>}
+	].
+
+scenario_game_short_01750() ->
+	[
+		{aac, <<"game/01750.aac">>}
+	].
+
+scenario_game_medium_01767() ->
+	[
+		{aac, <<"game/01767.aac">>}
+	].
+
+scenario_game_medium_01802() ->
+	[
+		{aac, <<"game/01802.aac">>}
+	].
+
+scenario_game_medium_01827() ->
+	[
+		{aac, <<"game/01827.aac">>}
+	].
+
+scenario_game_medium_01847() ->
+	[
+		{aac, <<"game/01847.aac">>}
+	].
+
+scenario_game_medium_01878() ->
+	[
+		{aac, <<"game/01878.aac">>}
+	].
+
+scenario_game_medium_01883() ->
+	[
+		{aac, <<"game/01883.aac">>}
+	].
+
+scenario_game_medium_01891() ->
+	[
+		{aac, <<"game/01891.aac">>}
+	].
+
+scenario_game_medium_01920() ->
+	[
+		{aac, <<"game/01920.aac">>}
+	].
+
+scenario_game_medium_01952() ->
+	[
+		{aac, <<"game/01952.aac">>}
+	].
+
+scenario_game_medium_01974() ->
+	[
+		{aac, <<"game/01974.aac">>}
+	].
+
+scenario_game_medium_01996() ->
+	[
+		{aac, <<"game/01996.aac">>}
+	].
+
+scenario_game_medium_02059() ->
+	[
+		{aac, <<"game/02059.aac">>}
+	].
+
+scenario_game_medium_02069() ->
+	[
+		{aac, <<"game/02069.aac">>}
+	].
+
+scenario_game_medium_02081() ->
+	[
+		{aac, <<"game/02081.aac">>}
+	].
+
+scenario_game_medium_02090() ->
+	[
+		{aac, <<"game/02090.aac">>}
+	].
+
+scenario_game_medium_02113() ->
+	[
+		{aac, <<"game/02113.aac">>}
+	].
+
+scenario_game_medium_02125() ->
+	[
+		{aac, <<"game/02125.aac">>}
+	].
+
+scenario_game_medium_02139() ->
+	[
+		{aac, <<"game/02139.aac">>}
+	].
+
+scenario_game_medium_02151() ->
+	[
+		{aac, <<"game/02151.aac">>}
+	].
+
+scenario_game_medium_02168() ->
+	[
+		{aac, <<"game/02168.aac">>}
+	].
+
+scenario_game_medium_02220() ->
+	[
+		{aac, <<"game/02220.aac">>}
+	].
+
+scenario_game_medium_02364() ->
+	[
+		{aac, <<"game/02364.aac">>}
+	].
+
+scenario_game_medium_02365() ->
+	[
+		{aac, <<"game/02365.aac">>}
+	].
+
+scenario_game_medium_02375() ->
+	[
+		{aac, <<"game/02375.aac">>}
+	].
+
+scenario_game_medium_02384() ->
+	[
+		{aac, <<"game/02384.aac">>}
+	].
+
+scenario_game_medium_02388() ->
 	[
 		{aac, <<"game/02388.aac">>}
 	].
 
-scenario_game_02525() ->
+scenario_game_medium_02525() ->
 	[
 		{aac, <<"game/02525.aac">>}
 	].
 
-scenario_game_02537() ->
+scenario_game_medium_02537() ->
 	[
 		{aac, <<"game/02537.aac">>}
 	].
 
-scenario_game_02686() ->
+scenario_game_medium_02686() ->
 	[
 		{aac, <<"game/02686.aac">>}
 	].
 
-scenario_game_02821() ->
+scenario_game_medium_02821() ->
 	[
 		{aac, <<"game/02821.aac">>}
 	].
 
-scenario_game_02865() ->
+scenario_game_medium_02865() ->
 	[
 		{aac, <<"game/02865.aac">>}
 	].
 
-scenario_game_02907() ->
+scenario_game_medium_02907() ->
 	[
 		{aac, <<"game/02907.aac">>}
 	].
 
-scenario_game_02933() ->
+scenario_game_medium_02933() ->
 	[
 		{aac, <<"game/02933.aac">>}
 	].
 
-scenario_game_03018() ->
+scenario_game_medium_03018() ->
 	[
 		{aac, <<"game/03018.aac">>}
 	].
 
-scenario_game_03063() ->
+scenario_game_medium_03063() ->
 	[
 		{aac, <<"game/03063.aac">>}
 	].
 
-scenario_game_03077() ->
+scenario_game_medium_03077() ->
 	[
 		{aac, <<"game/03077.aac">>}
 	].
 
-scenario_game_03079() ->
+scenario_game_medium_03079() ->
 	[
 		{aac, <<"game/03079.aac">>}
 	].
 
-scenario_game_03130() ->
+scenario_game_medium_03130() ->
 	[
 		{aac, <<"game/03130.aac">>}
 	].
 
-scenario_game_03147() ->
+scenario_game_medium_03147() ->
 	[
 		{aac, <<"game/03147.aac">>}
 	].
 
-scenario_game_03149() ->
+scenario_game_medium_03149() ->
 	[
 		{aac, <<"game/03149.aac">>}
 	].
 
-scenario_game_03223() ->
+scenario_game_medium_03223() ->
 	[
 		{aac, <<"game/03223.aac">>}
 	].
 
-scenario_game_03385() ->
+scenario_game_medium_03385() ->
 	[
 		{aac, <<"game/03385.aac">>}
 	].
 
-scenario_game_03765() ->
+scenario_game_long_03765() ->
 	[
 		{aac, <<"game/03765.aac">>}
 	].
 
-scenario_game_04086() ->
+scenario_game_long_04086() ->
 	[
 		{aac, <<"game/04086.aac">>}
 	].
 
-scenario_game_04239() ->
+scenario_game_long_04239() ->
 	[
 		{aac, <<"game/04239.aac">>}
 	].
 
-scenario_game_04843() ->
+scenario_game_long_04843() ->
 	[
 		{aac, <<"game/04843.aac">>}
 	].
 
-scenario_game_04933() ->
+scenario_game_long_04933() ->
 	[
 		{aac, <<"game/04933.aac">>}
 	].
 
-scenario_game_05030() ->
+scenario_game_long_05030() ->
 	[
 		{aac, <<"game/05030.aac">>}
 	].
@@ -808,6 +1476,536 @@ scenario_hits_00247() ->
 scenario_hits_00249() ->
 	[
 		{aac, <<"hits/00249.aac">>}
+	].
+
+scenario_hits_00255() ->
+	[
+		{aac, <<"hits/00255.aac">>}
+	].
+
+scenario_hits_00280() ->
+	[
+		{aac, <<"hits/00280.aac">>}
+	].
+
+scenario_hits_00281() ->
+	[
+		{aac, <<"hits/00281.aac">>}
+	].
+
+scenario_hits_00313() ->
+	[
+		{aac, <<"hits/00313.aac">>}
+	].
+
+scenario_hits_00315() ->
+	[
+		{aac, <<"hits/00315.aac">>}
+	].
+
+scenario_hits_00318() ->
+	[
+		{aac, <<"hits/00318.aac">>}
+	].
+
+scenario_hits_00321() ->
+	[
+		{aac, <<"hits/00321.aac">>}
+	].
+
+scenario_hits_00325() ->
+	[
+		{aac, <<"hits/00325.aac">>}
+	].
+
+scenario_hits_00328() ->
+	[
+		{aac, <<"hits/00328.aac">>}
+	].
+
+scenario_hits_00329() ->
+	[
+		{aac, <<"hits/00329.aac">>}
+	].
+
+scenario_hits_00337() ->
+	[
+		{aac, <<"hits/00337.aac">>}
+	].
+
+scenario_hits_00341() ->
+	[
+		{aac, <<"hits/00341.aac">>}
+	].
+
+scenario_hits_00349() ->
+	[
+		{aac, <<"hits/00349.aac">>}
+	].
+
+scenario_hits_00350() ->
+	[
+		{aac, <<"hits/00350.aac">>}
+	].
+
+scenario_hits_00360() ->
+	[
+		{aac, <<"hits/00360.aac">>}
+	].
+
+scenario_hits_00364() ->
+	[
+		{aac, <<"hits/00364.aac">>}
+	].
+
+scenario_hits_00368() ->
+	[
+		{aac, <<"hits/00368.aac">>}
+	].
+
+scenario_hits_00384() ->
+	[
+		{aac, <<"hits/00384.aac">>}
+	].
+
+scenario_hits_00389() ->
+	[
+		{aac, <<"hits/00389.aac">>}
+	].
+
+scenario_hits_00390() ->
+	[
+		{aac, <<"hits/00390.aac">>}
+	].
+
+scenario_hits_00407() ->
+	[
+		{aac, <<"hits/00407.aac">>}
+	].
+
+scenario_hits_00413() ->
+	[
+		{aac, <<"hits/00413.aac">>}
+	].
+
+scenario_hits_00415() ->
+	[
+		{aac, <<"hits/00415.aac">>}
+	].
+
+scenario_hits_00430() ->
+	[
+		{aac, <<"hits/00430.aac">>}
+	].
+
+scenario_hits_00433() ->
+	[
+		{aac, <<"hits/00433.aac">>}
+	].
+
+scenario_hits_00441() ->
+	[
+		{aac, <<"hits/00441.aac">>}
+	].
+
+scenario_hits_00446() ->
+	[
+		{aac, <<"hits/00446.aac">>}
+	].
+
+scenario_hits_00451() ->
+	[
+		{aac, <<"hits/00451.aac">>}
+	].
+
+scenario_hits_00454() ->
+	[
+		{aac, <<"hits/00454.aac">>}
+	].
+
+scenario_hits_00458() ->
+	[
+		{aac, <<"hits/00458.aac">>}
+	].
+
+scenario_hits_00469() ->
+	[
+		{aac, <<"hits/00469.aac">>}
+	].
+
+scenario_hits_00474() ->
+	[
+		{aac, <<"hits/00474.aac">>}
+	].
+
+scenario_hits_00475() ->
+	[
+		{aac, <<"hits/00475.aac">>}
+	].
+
+scenario_hits_00477() ->
+	[
+		{aac, <<"hits/00477.aac">>}
+	].
+
+scenario_hits_00489() ->
+	[
+		{aac, <<"hits/00489.aac">>}
+	].
+
+scenario_hits_00501() ->
+	[
+		{aac, <<"hits/00501.aac">>}
+	].
+
+scenario_hits_00502() ->
+	[
+		{aac, <<"hits/00502.aac">>}
+	].
+
+scenario_hits_00505() ->
+	[
+		{aac, <<"hits/00505.aac">>}
+	].
+
+scenario_hits_00512() ->
+	[
+		{aac, <<"hits/00512.aac">>}
+	].
+
+scenario_hits_00520() ->
+	[
+		{aac, <<"hits/00520.aac">>}
+	].
+
+scenario_hits_00522() ->
+	[
+		{aac, <<"hits/00522.aac">>}
+	].
+
+scenario_hits_00536() ->
+	[
+		{aac, <<"hits/00536.aac">>}
+	].
+
+scenario_hits_00545() ->
+	[
+		{aac, <<"hits/00545.aac">>}
+	].
+
+scenario_hits_00546() ->
+	[
+		{aac, <<"hits/00546.aac">>}
+	].
+
+scenario_hits_00552() ->
+	[
+		{aac, <<"hits/00552.aac">>}
+	].
+
+scenario_hits_00559() ->
+	[
+		{aac, <<"hits/00559.aac">>}
+	].
+
+scenario_hits_00560() ->
+	[
+		{aac, <<"hits/00560.aac">>}
+	].
+
+scenario_hits_00561() ->
+	[
+		{aac, <<"hits/00561.aac">>}
+	].
+
+scenario_hits_00563() ->
+	[
+		{aac, <<"hits/00563.aac">>}
+	].
+
+scenario_hits_00565() ->
+	[
+		{aac, <<"hits/00565.aac">>}
+	].
+
+scenario_hits_00568() ->
+	[
+		{aac, <<"hits/00568.aac">>}
+	].
+
+scenario_hits_00580() ->
+	[
+		{aac, <<"hits/00580.aac">>}
+	].
+
+scenario_hits_00591() ->
+	[
+		{aac, <<"hits/00591.aac">>}
+	].
+
+scenario_hits_00605() ->
+	[
+		{aac, <<"hits/00605.aac">>}
+	].
+
+scenario_hits_00615() ->
+	[
+		{aac, <<"hits/00615.aac">>}
+	].
+
+scenario_hits_00621() ->
+	[
+		{aac, <<"hits/00621.aac">>}
+	].
+
+scenario_hits_00624() ->
+	[
+		{aac, <<"hits/00624.aac">>}
+	].
+
+scenario_hits_00637() ->
+	[
+		{aac, <<"hits/00637.aac">>}
+	].
+
+scenario_hits_00659() ->
+	[
+		{aac, <<"hits/00659.aac">>}
+	].
+
+scenario_hits_00667() ->
+	[
+		{aac, <<"hits/00667.aac">>}
+	].
+
+scenario_hits_00684() ->
+	[
+		{aac, <<"hits/00684.aac">>}
+	].
+
+scenario_hits_00685() ->
+	[
+		{aac, <<"hits/00685.aac">>}
+	].
+
+scenario_hits_00688() ->
+	[
+		{aac, <<"hits/00688.aac">>}
+	].
+
+scenario_hits_00689() ->
+	[
+		{aac, <<"hits/00689.aac">>}
+	].
+
+scenario_hits_00692() ->
+	[
+		{aac, <<"hits/00692.aac">>}
+	].
+
+scenario_hits_00705() ->
+	[
+		{aac, <<"hits/00705.aac">>}
+	].
+
+scenario_hits_00710() ->
+	[
+		{aac, <<"hits/00710.aac">>}
+	].
+
+scenario_hits_00712() ->
+	[
+		{aac, <<"hits/00712.aac">>}
+	].
+
+scenario_hits_00714() ->
+	[
+		{aac, <<"hits/00714.aac">>}
+	].
+
+scenario_hits_00717() ->
+	[
+		{aac, <<"hits/00717.aac">>}
+	].
+
+scenario_hits_00718() ->
+	[
+		{aac, <<"hits/00718.aac">>}
+	].
+
+scenario_hits_00727() ->
+	[
+		{aac, <<"hits/00727.aac">>}
+	].
+
+scenario_hits_00755() ->
+	[
+		{aac, <<"hits/00755.aac">>}
+	].
+
+scenario_hits_00756() ->
+	[
+		{aac, <<"hits/00756.aac">>}
+	].
+
+scenario_hits_00769() ->
+	[
+		{aac, <<"hits/00769.aac">>}
+	].
+
+scenario_hits_00775() ->
+	[
+		{aac, <<"hits/00775.aac">>}
+	].
+
+scenario_hits_00776() ->
+	[
+		{aac, <<"hits/00776.aac">>}
+	].
+
+scenario_hits_00778() ->
+	[
+		{aac, <<"hits/00778.aac">>}
+	].
+
+scenario_hits_00784() ->
+	[
+		{aac, <<"hits/00784.aac">>}
+	].
+
+scenario_hits_00796() ->
+	[
+		{aac, <<"hits/00796.aac">>}
+	].
+
+scenario_hits_00797() ->
+	[
+		{aac, <<"hits/00797.aac">>}
+	].
+
+scenario_hits_00802() ->
+	[
+		{aac, <<"hits/00802.aac">>}
+	].
+
+scenario_hits_00813() ->
+	[
+		{aac, <<"hits/00813.aac">>}
+	].
+
+scenario_hits_00820() ->
+	[
+		{aac, <<"hits/00820.aac">>}
+	].
+
+scenario_hits_00828() ->
+	[
+		{aac, <<"hits/00828.aac">>}
+	].
+
+scenario_hits_00831() ->
+	[
+		{aac, <<"hits/00831.aac">>}
+	].
+
+scenario_hits_00840() ->
+	[
+		{aac, <<"hits/00840.aac">>}
+	].
+
+scenario_hits_00844() ->
+	[
+		{aac, <<"hits/00844.aac">>}
+	].
+
+scenario_hits_00860() ->
+	[
+		{aac, <<"hits/00860.aac">>}
+	].
+
+scenario_hits_00871() ->
+	[
+		{aac, <<"hits/00871.aac">>}
+	].
+
+scenario_hits_00880() ->
+	[
+		{aac, <<"hits/00880.aac">>}
+	].
+
+scenario_hits_00883() ->
+	[
+		{aac, <<"hits/00883.aac">>}
+	].
+
+scenario_hits_00890() ->
+	[
+		{aac, <<"hits/00890.aac">>}
+	].
+
+scenario_hits_00895() ->
+	[
+		{aac, <<"hits/00895.aac">>}
+	].
+
+scenario_hits_00896() ->
+	[
+		{aac, <<"hits/00896.aac">>}
+	].
+
+scenario_hits_00897() ->
+	[
+		{aac, <<"hits/00897.aac">>}
+	].
+
+scenario_hits_00900() ->
+	[
+		{aac, <<"hits/00900.aac">>}
+	].
+
+scenario_hits_00905() ->
+	[
+		{aac, <<"hits/00905.aac">>}
+	].
+
+scenario_hits_00918() ->
+	[
+		{aac, <<"hits/00918.aac">>}
+	].
+
+scenario_hits_00919() ->
+	[
+		{aac, <<"hits/00919.aac">>}
+	].
+
+scenario_hits_00925() ->
+	[
+		{aac, <<"hits/00925.aac">>}
+	].
+
+scenario_hits_00932() ->
+	[
+		{aac, <<"hits/00932.aac">>}
+	].
+
+scenario_hits_00933() ->
+	[
+		{aac, <<"hits/00933.aac">>}
+	].
+
+scenario_hits_00938() ->
+	[
+		{aac, <<"hits/00938.aac">>}
+	].
+
+scenario_hits_00953() ->
+	[
+		{aac, <<"hits/00953.aac">>}
+	].
+
+scenario_hits_00966() ->
+	[
+		{aac, <<"hits/00966.aac">>}
 	].
 
 scenario_hits_00973() ->
@@ -1140,6 +2338,106 @@ scenario_joy_01554() ->
 		{aac, <<"joy/01554.aac">>}
 	].
 
+scenario_joy_01558() ->
+	[
+		{aac, <<"joy/01558.aac">>}
+	].
+
+scenario_joy_01647() ->
+	[
+		{aac, <<"joy/01647.aac">>}
+	].
+
+scenario_joy_01653() ->
+	[
+		{aac, <<"joy/01653.aac">>}
+	].
+
+scenario_joy_01683() ->
+	[
+		{aac, <<"joy/01683.aac">>}
+	].
+
+scenario_joy_01709() ->
+	[
+		{aac, <<"joy/01709.aac">>}
+	].
+
+scenario_joy_01716() ->
+	[
+		{aac, <<"joy/01716.aac">>}
+	].
+
+scenario_joy_01740() ->
+	[
+		{aac, <<"joy/01740.aac">>}
+	].
+
+scenario_joy_01743() ->
+	[
+		{aac, <<"joy/01743.aac">>}
+	].
+
+scenario_joy_01776() ->
+	[
+		{aac, <<"joy/01776.aac">>}
+	].
+
+scenario_joy_01781() ->
+	[
+		{aac, <<"joy/01781.aac">>}
+	].
+
+scenario_joy_01787() ->
+	[
+		{aac, <<"joy/01787.aac">>}
+	].
+
+scenario_joy_01816() ->
+	[
+		{aac, <<"joy/01816.aac">>}
+	].
+
+scenario_joy_01819() ->
+	[
+		{aac, <<"joy/01819.aac">>}
+	].
+
+scenario_joy_01824() ->
+	[
+		{aac, <<"joy/01824.aac">>}
+	].
+
+scenario_joy_01827() ->
+	[
+		{aac, <<"joy/01827.aac">>}
+	].
+
+scenario_joy_01828() ->
+	[
+		{aac, <<"joy/01828.aac">>}
+	].
+
+scenario_joy_01833() ->
+	[
+		{aac, <<"joy/01833.aac">>}
+	].
+
+scenario_joy_01877() ->
+	[
+		{aac, <<"joy/01877.aac">>}
+	].
+
+scenario_joy_01889() ->
+	[
+		{aac, <<"joy/01889.aac">>}
+	].
+
+scenario_joy_01906() ->
+	[
+		{aac, <<"joy/01906.aac">>}
+	].
+
 scenario_joy_01961() ->
 	[
 		{aac, <<"joy/01961.aac">>}
@@ -1301,16 +2599,10 @@ scenario_poke_01134() ->
 	].
 
 scenario_test_1() ->
-    [
-    	{servo, 0},
-        {servo, 60, 1200},
-        {wait, 2000},
-        {servo, 0},
-        {wait, 1000},
-        {servo, 60, 1200},
-        {wait, 2000},
-        {servo, 0}
-    ].
+	[
+		{wait, 451}, {servo, 17}, {wait, 2540}, {servo, 85, 1592}, {wait, 2414}, {servo, 100, 590}, {wait, 1666}, {servo, 0, 1000}
+	].
+
 scenario_tired_01006() ->
 	[
 		{aac, <<"tired/01006.aac">>}
@@ -1359,6 +2651,126 @@ scenario_tired_01583() ->
 scenario_tired_01607() ->
 	[
 		{aac, <<"tired/01607.aac">>}
+	].
+
+scenario_tired_01645() ->
+	[
+		{aac, <<"tired/01645.aac">>}
+	].
+
+scenario_tired_01742() ->
+	[
+		{aac, <<"tired/01742.aac">>}
+	].
+
+scenario_tired_01778() ->
+	[
+		{aac, <<"tired/01778.aac">>}
+	].
+
+scenario_tired_01794() ->
+	[
+		{aac, <<"tired/01794.aac">>}
+	].
+
+scenario_tired_01798() ->
+	[
+		{aac, <<"tired/01798.aac">>}
+	].
+
+scenario_tired_01836() ->
+	[
+		{aac, <<"tired/01836.aac">>}
+	].
+
+scenario_tired_01859() ->
+	[
+		{aac, <<"tired/01859.aac">>}
+	].
+
+scenario_tired_01893() ->
+	[
+		{aac, <<"tired/01893.aac">>}
+	].
+
+scenario_tired_01952() ->
+	[
+		{aac, <<"tired/01952.aac">>}
+	].
+
+scenario_tired_01960() ->
+	[
+		{aac, <<"tired/01960.aac">>}
+	].
+
+scenario_tired_01980() ->
+	[
+		{aac, <<"tired/01980.aac">>}
+	].
+
+scenario_tired_02015() ->
+	[
+		{aac, <<"tired/02015.aac">>}
+	].
+
+scenario_tired_02114() ->
+	[
+		{aac, <<"tired/02114.aac">>}
+	].
+
+scenario_tired_02146() ->
+	[
+		{aac, <<"tired/02146.aac">>}
+	].
+
+scenario_tired_02173() ->
+	[
+		{aac, <<"tired/02173.aac">>}
+	].
+
+scenario_tired_02234() ->
+	[
+		{aac, <<"tired/02234.aac">>}
+	].
+
+scenario_tired_02255() ->
+	[
+		{aac, <<"tired/02255.aac">>}
+	].
+
+scenario_tired_02276() ->
+	[
+		{aac, <<"tired/02276.aac">>}
+	].
+
+scenario_tired_02301() ->
+	[
+		{aac, <<"tired/02301.aac">>}
+	].
+
+scenario_tired_02308() ->
+	[
+		{aac, <<"tired/02308.aac">>}
+	].
+
+scenario_tired_02314() ->
+	[
+		{aac, <<"tired/02314.aac">>}
+	].
+
+scenario_tired_02330() ->
+	[
+		{aac, <<"tired/02330.aac">>}
+	].
+
+scenario_tired_02421() ->
+	[
+		{aac, <<"tired/02421.aac">>}
+	].
+
+scenario_tired_02467() ->
+	[
+		{aac, <<"tired/02467.aac">>}
 	].
 
 scenario_tired_02519() ->
@@ -1519,6 +2931,106 @@ scenario_upset_00930() ->
 scenario_upset_00968() ->
 	[
 		{aac, <<"upset/00968.aac">>}
+	].
+
+scenario_upset_00984() ->
+	[
+		{aac, <<"upset/00984.aac">>}
+	].
+
+scenario_upset_01015() ->
+	[
+		{aac, <<"upset/01015.aac">>}
+	].
+
+scenario_upset_01042() ->
+	[
+		{aac, <<"upset/01042.aac">>}
+	].
+
+scenario_upset_01070() ->
+	[
+		{aac, <<"upset/01070.aac">>}
+	].
+
+scenario_upset_01081() ->
+	[
+		{aac, <<"upset/01081.aac">>}
+	].
+
+scenario_upset_01171() ->
+	[
+		{aac, <<"upset/01171.aac">>}
+	].
+
+scenario_upset_01263() ->
+	[
+		{aac, <<"upset/01263.aac">>}
+	].
+
+scenario_upset_01270() ->
+	[
+		{aac, <<"upset/01270.aac">>}
+	].
+
+scenario_upset_01303() ->
+	[
+		{aac, <<"upset/01303.aac">>}
+	].
+
+scenario_upset_01312() ->
+	[
+		{aac, <<"upset/01312.aac">>}
+	].
+
+scenario_upset_01330() ->
+	[
+		{aac, <<"upset/01330.aac">>}
+	].
+
+scenario_upset_01333() ->
+	[
+		{aac, <<"upset/01333.aac">>}
+	].
+
+scenario_upset_01340() ->
+	[
+		{aac, <<"upset/01340.aac">>}
+	].
+
+scenario_upset_01342() ->
+	[
+		{aac, <<"upset/01342.aac">>}
+	].
+
+scenario_upset_01386() ->
+	[
+		{aac, <<"upset/01386.aac">>}
+	].
+
+scenario_upset_01390() ->
+	[
+		{aac, <<"upset/01390.aac">>}
+	].
+
+scenario_upset_01419() ->
+	[
+		{aac, <<"upset/01419.aac">>}
+	].
+
+scenario_upset_01468() ->
+	[
+		{aac, <<"upset/01468.aac">>}
+	].
+
+scenario_upset_01485() ->
+	[
+		{aac, <<"upset/01485.aac">>}
+	].
+
+scenario_upset_01509() ->
+	[
+		{aac, <<"upset/01509.aac">>}
 	].
 
 scenario_upset_01559() ->
