@@ -766,6 +766,21 @@ void ScenariosUIInit() {
   gScen_y0 = height/2;
   gScen_w0 = 300;
   gScen_h0 = height - gScen_y0;
+  
+  // change all games names : parse all scenarios and change games names if needed
+  if (gScenarios.size() > 0) {
+    // list
+    for (int i = 0; i < gScenarios.size(); i++) {
+      Scenario scenar = gScenarios.get(i);
+      if (scenar.name.startsWith("game")) {
+        gScen_curScenarIndex = i;
+        gScenarEditor = new ScenarEditor(scenar);
+        ScenariosSaveCurrent();
+      }
+    }
+    gScen_curScenarIndex = -1;
+    gScenarEditor = null;
+  }
 }
 
 void ScenariosDisplay() {

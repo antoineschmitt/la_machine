@@ -80,6 +80,13 @@ power_on(Config) ->
     Duty0 = target_to_duty(0, Config),
     Duty100 = target_to_duty(100, Config),
 
+    %% ??
+    io:format("power_on\n", []),
+
+    ok = ledc:set_duty(?LEDC_MODE, ?LEDC_CHANNEL, Duty0),
+    ok = ledc:update_duty(?LEDC_MODE, ?LEDC_CHANNEL),
+    timer:sleep(200),
+
     #state{
         pre_min = min(Duty0, Duty100),
         pre_max = max(Duty0, Duty100),
@@ -133,6 +140,10 @@ set_angle(Angle, State) ->
 -spec set_target(Target :: number(), State :: state()) -> {non_neg_integer(), state()}.
 set_target(Target, #state{config = Config} = State) ->
     Duty = target_to_duty(Target, Config),
+    %% ??
+    Now = erlang:system_time(millisecond),
+    io:format("set_target Now=~p Target=~p Duty=~p\n", [Now, Target, Duty]),
+
     ok = ledc:set_duty(?LEDC_MODE, ?LEDC_CHANNEL, Duty),
     ok = ledc:update_duty(?LEDC_MODE, ?LEDC_CHANNEL),
     target_duty_timeout(Duty, 0, State).
@@ -159,6 +170,9 @@ target_duty_timeout(Duty, MinTimeMS, #state{pre_min = PreMin, pre_max = PreMax} 
         max(abs(Duty - PreMin), abs(Duty - PreMax)) * ?SERVO_MAX_ANGLE_TIME_MS / ?SERVO_MAX_DUTY *
             ?SERVO_FREQ_PERIOD_US / ?SERVO_MAX_WIDTH_US
     ),
+    %% ??
+    io:format("target_duty_timeout Duty=~p PreMin=~p PreMax=~p MaxTime=~p\n", [Duty, PreMin, PreMax, MaxTime]),
+
     {max(MaxTime, MinTimeMS), State#state{
         pre_min = min(Duty, PreMin), pre_max = max(Duty, PreMax), target = Duty
     }}.
@@ -167,6 +181,9 @@ target_to_duty(Target, Config) ->
     InterruptAngle = la_machine_configuration:interrupt_angle(Config),
     ClosedAngle = la_machine_configuration:closed_angle(Config),
     Angle = Target * (InterruptAngle - ClosedAngle) / 100 + ClosedAngle,
+    %% ??
+    io:format("target_to_duty Target=~p InterruptAngle=~p ClosedAngle=~p Angle=~p\n", [Target, InterruptAngle, ClosedAngle, Angle]),
+
     angle_to_duty(Angle).
 
 angle_to_duty(Angle) ->
@@ -178,6 +195,11 @@ angle_to_duty(Angle) ->
 
 -spec timeout(State :: state()) -> state().
 timeout(State) ->
+    %% ??
+    Now = erlang:system_time(millisecond),
+    Duty = ledc:get_duty(?LEDC_MODE, ?LEDC_CHANNEL),
+    io:format("timeout Now=~p Duty=~p\n", [Now, Duty]),
+
     ledc:stop(?LEDC_MODE, ?LEDC_CHANNEL, 0),
     reset_target(State).
 
