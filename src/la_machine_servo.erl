@@ -81,6 +81,10 @@ power_on(Config) ->
     Duty0 = target_to_duty(0, Config),
     %Duty100 = target_to_duty(100, Config),
 
+    %% ??
+    Now = erlang:system_time(millisecond),
+    io:format("~p: servo:power_on Duty0=~p\n", [Now, Duty0]),
+
     % force to Duty0 and wait a little
     ok = ledc:set_duty(?LEDC_MODE, ?LEDC_CHANNEL, Duty0),
     ok = ledc:update_duty(?LEDC_MODE, ?LEDC_CHANNEL),
@@ -142,10 +146,19 @@ set_target(Target, #state{config = Config} = State) ->
     Duty = target_to_duty(Target, Config),
     %% ??
     Now = erlang:system_time(millisecond),
-    io:format("set_target Now=~p Target=~p Duty=~p\n", [Now, Target, Duty]),
+    io:format("~p: set_target Target=~p Duty=~p\n", [Now, Target, Duty]),
 
     ok = ledc:set_duty(?LEDC_MODE, ?LEDC_CHANNEL, Duty),
+    %% ??
+    Now2 = erlang:system_time(millisecond),
+    io:format("~p [~p]: after ledc:set_duty\n", [Now2, (Now2 - Now)]),
+
     ok = ledc:update_duty(?LEDC_MODE, ?LEDC_CHANNEL),
+
+    %% ??
+    Now3 = erlang:system_time(millisecond),
+    io:format("~p [~p]: after ledc:update_duty\n", [Now3, (Now3 - Now2)]),
+
     target_duty_timeout(Duty, 0, State).
 
 %% -----------------------------------------------------------------------------
@@ -161,8 +174,22 @@ set_target(Target, #state{config = Config} = State) ->
     {non_neg_integer(), state()}.
 set_target(Target, TimeMS, #state{config = Config} = State) ->
     Duty = target_to_duty(Target, Config),
+    %% ??
+    Now = erlang:system_time(millisecond),
+    io:format("~p: set_target Target=~p TimeMS=~p Duty=~p\n", [Now, Target, TimeMS, Duty]),
+
     ok = ledc:set_fade_with_time(?LEDC_MODE, ?LEDC_CHANNEL, Duty, TimeMS),
+    
+    %% ??
+    Now2 = erlang:system_time(millisecond),
+    io:format("~p [~p]: after ledc:set_fade_with_time\n", [Now2, (Now2 - Now)]),
+
     ok = ledc:fade_start(?LEDC_MODE, ?LEDC_CHANNEL, ?LEDC_FADE_NO_WAIT),
+ 
+    %% ??
+    Now3 = erlang:system_time(millisecond),
+    io:format("~p [~p]: after ledc:fade_start\n", [Now3, (Now3 - Now2)]),
+
     target_duty_timeout(Duty, TimeMS, State).
 
 target_duty_timeout(Duty, MinTimeMS, #state{pre_min = PreMin, pre_max = PreMax} = State) ->
@@ -172,7 +199,7 @@ target_duty_timeout(Duty, MinTimeMS, #state{pre_min = PreMin, pre_max = PreMax} 
     ),
     %% ??
     Now = erlang:system_time(millisecond),
-    io:format("target_duty_timeout Now=~p Duty=~p PreMin=~p PreMax=~p MaxTime=~p\n", [Now, Duty, PreMin, PreMax, MaxTime]),
+    io:format("~p: target_duty_timeout Duty=~p PreMin=~p PreMax=~p MinTimeMS=~p MaxTime=~p\n", [Now, Duty, PreMin, PreMax, MinTimeMS, MaxTime]),
 
     {max(MaxTime, MinTimeMS), State#state{
         pre_min = min(Duty, PreMin), pre_max = max(Duty, PreMax), target = Duty, last_time = Now
@@ -195,7 +222,7 @@ angle_to_duty(Angle) ->
 timeout(#state{last_time = LastTime} = State) ->
     %% ??
     Now = erlang:system_time(millisecond),
-    io:format("timeout Now=~p DeltaT=~p\n", [Now, Now - LastTime]),
+    io:format("~p: timeout DeltaT=~p\n", [Now, Now - LastTime]),
 
     ledc:stop(?LEDC_MODE, ?LEDC_CHANNEL, 0),
     reset_target(State).
