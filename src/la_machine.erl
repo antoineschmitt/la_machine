@@ -109,6 +109,10 @@ read_button() ->
 run() ->
     WatchdogUser = configure_watchdog(),
 
+    %% ??
+    Now = erlang:system_time(millisecond),
+    io:format("run Now=~p\n", [Now]),
+
     la_machine_battery:init(),
     WakeupCause = esp:sleep_get_wakeup_cause(),
 
@@ -269,13 +273,29 @@ compute_action(IsPausedNow, WakeupCause, ButtonState, AccelerometerState, State)
 ) ->
     non_neg_integer().
 run_configured(Config, WakeupCause, ButtonState) ->
+    %% ??
+    Now = erlang:system_time(millisecond),
+    io:format("run_configured Now=~p\n", [Now]),
+
     AccelerometerState = la_machine_lis3dh:setup(),
 
+    %% ??
+    Now2 = erlang:system_time(millisecond),
+    io:format("after la_machine_lis3dh:setup Now=~p\n", [Now2]),
+
     State0 = la_machine_state:load_state(),
+
+    %% ??
+    Now3 = erlang:system_time(millisecond),
+    io:format("after la_machine_state:load_state Now=~p\n", [Now3]),
 
     %% process click
     StateX = do_process_click(WakeupCause, ButtonState, State0),
     IsPausedNow = la_machine_state:get_is_paused(StateX),
+
+    %% ??
+    Now4 = erlang:system_time(millisecond),
+    io:format("after do_process_click Now=~p\n", [Now4]),
 
     State1 =
         case compute_action(IsPausedNow, WakeupCause, ButtonState, AccelerometerState, StateX) of
@@ -602,11 +622,25 @@ play_poke(Config) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 -spec play_random_hit(pid()) -> pos_integer().
 play_random_hit(Pid) ->
+    %% ??
+    Now3 = erlang:system_time(millisecond),
+    io:format("play_random_hit Now3=~p\n", [Now3]),
+
     MoodScenar = hits,
     ScenarioCount = la_machine_scenarios:count(MoodScenar),
+
+    %% ??
+    Now4 = erlang:system_time(millisecond),
+    io:format("after la_machine_scenarios:count Count=~p Now=~p\n", [ScenarioCount, Now4]),
+
     ScenarioIx = random_num_upto_butnot(ScenarioCount, undefined),
     io:format("play_random_hit=~p\n", [ScenarioIx]),
     Scenario = la_machine_scenarios:get(MoodScenar, ScenarioIx),
+
+    %% ??
+    Now5 = erlang:system_time(millisecond),
+    io:format("after la_machine_scenarios:get Now=~p\n", [Now5]),
+
     % could be adapted to length of hit
     Scenario_Full = Scenario ++ [{servo, 100}, {wait, 200}, {servo, 0}],
     ok = la_machine_player:play(Pid, Scenario_Full),
@@ -620,8 +654,15 @@ play_random_hit(Pid) ->
 ) ->
     pos_integer().
 play_random_scenario(MoodScenar, LastPlaySeq, Config) ->
+    %% ??
+    Now3 = erlang:system_time(millisecond),
+    io:format("play_random_scenario MoodScenar=~p Now3=~p\n", [MoodScenar, Now3]),
+
     ScenarioCount = la_machine_scenarios:count(MoodScenar),
-    io:format("play_random_scenario MoodScenar=~p ScenarioCount=~p\n", [MoodScenar, ScenarioCount]),
+
+    %% ??
+    Now4 = erlang:system_time(millisecond),
+    io:format("after la_machine_scenarios:count Count=~p Now=~p\n", [ScenarioCount, Now4]),
 
     % play random scenario
     ScenarioIx = random_num_upto_butnot(ScenarioCount, LastPlaySeq),
@@ -636,10 +677,16 @@ play_random_scenario(MoodScenar, LastPlaySeq, Config) ->
 ) ->
     pos_integer().
 play_random_scenario_with_hit(MoodScenar, LastPlaySeq, Config) ->
+    %% ??
+    Now3 = erlang:system_time(millisecond),
+    io:format("play_random_scenario_with_hit MoodScenar=~p Now3=~p\n", [MoodScenar, Now3]),
+
     ScenarioCount = la_machine_scenarios:count(MoodScenar),
-    io:format("play_random_scenario_with_hit MoodScenar=~p ScenarioCount=~p\n", [
-        MoodScenar, ScenarioCount
-    ]),
+
+    %% ??
+    Now4 = erlang:system_time(millisecond),
+    io:format("after la_machine_scenarios:count Count=~p Now=~p\n",
+        [ScenarioCount, Now4]),
 
     % play random scenario
     ScenarioIx = random_num_upto_butnot(ScenarioCount, LastPlaySeq),
@@ -651,8 +698,22 @@ play_random_scenario_with_hit(MoodScenar, LastPlaySeq, Config) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 -spec play_scenario(atom(), pos_integer(), la_machine_configuration:config()) -> pos_integer().
 play_scenario(MoodScenar, ScenarioIx, Config) ->
+    %% ??
+    Now3 = erlang:system_time(millisecond),
+    io:format("play_scenario MoodScenar=~p Now=~p\n", [MoodScenar, Now3]),
+
     Scenario = la_machine_scenarios:get(MoodScenar, ScenarioIx),
+
+    %% ??
+    Now4 = erlang:system_time(millisecond),
+    io:format("after la_machine_scenarios:get Now=~p\n", [Now4]),
+
     {ok, Pid} = la_machine_player:start_link(Config),
+
+    %% ??
+    Now5 = erlang:system_time(millisecond),
+    io:format("after la_machine_player:start_link Now=~p\n", [Now5]),
+
     ok = la_machine_player:play(Pid, Scenario),
     ok = la_machine_player:stop(Pid),
     % reset audio and servo
@@ -666,8 +727,22 @@ play_scenario(MoodScenar, ScenarioIx, Config) ->
 -spec play_scenario_with_hit(atom(), pos_integer(), la_machine_configuration:config()) ->
     pos_integer().
 play_scenario_with_hit(MoodScenar, ScenarioIx, Config) ->
+    %% ??
+    Now3 = erlang:system_time(millisecond),
+    io:format("play_scenario_with_hit MoodScenar=~p Now=~p\n", [MoodScenar, Now3]),
+
     Scenario = la_machine_scenarios:get(MoodScenar, ScenarioIx),
+
+    %% ??
+    Now4 = erlang:system_time(millisecond),
+    io:format("after la_machine_scenarios:get Now=~p\n", [Now4]),
+
     {ok, Pid} = la_machine_player:start_link(Config),
+
+    %% ??
+    Now5 = erlang:system_time(millisecond),
+    io:format("after la_machine_player:start_link Now=~p\n", [Now5]),
+
     ok = la_machine_player:play(Pid, Scenario),
     % play hit if needed
     ButtonState = read_button(),

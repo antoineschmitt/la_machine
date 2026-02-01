@@ -59,7 +59,12 @@ reset() ->
 play(AACFilename) ->
     AudioPipeline = esp_adf_audio_pipeline:init([]),
 
+    %% ??
+    BeforeGetSound = erlang:system_time(millisecond),
     AACFile = atomvm:read_priv(la_machine, AACFilename),
+    AfterGetSound = erlang:system_time(millisecond),
+    io:format("Get sound ~Bms at ~B\n", [AfterGetSound - BeforeGetSound, BeforeGetSound]),
+
     AACDecoder = esp_adf_aac_decoder:init([]),
     ok = esp_adf_audio_element:set_read_binary(AACDecoder, AACFile),
     ok = esp_adf_audio_pipeline:register(AudioPipeline, AACDecoder, <<"aac">>),
