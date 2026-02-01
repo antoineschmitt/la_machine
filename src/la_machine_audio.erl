@@ -61,9 +61,10 @@ play(AACFilename) ->
 
     %% ??
     BeforeGetSound = erlang:system_time(millisecond),
+    io:format("audio:play before read_priv : Now=~B\n", [BeforeGetSound]),
     AACFile = atomvm:read_priv(la_machine, AACFilename),
     AfterGetSound = erlang:system_time(millisecond),
-    io:format("Get sound ~Bms at ~B\n", [AfterGetSound - BeforeGetSound, BeforeGetSound]),
+    io:format("audio:play .after read_priv : Dur=~Bms\n", [AfterGetSound - BeforeGetSound]),
 
     AACDecoder = esp_adf_aac_decoder:init([]),
     ok = esp_adf_audio_element:set_read_binary(AACDecoder, AACFile),
