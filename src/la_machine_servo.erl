@@ -49,7 +49,8 @@
     pre_min :: number(),
     pre_max :: number(),
     target = undefined :: undefined | number(),
-    config :: la_machine_configuration:config()
+    config :: la_machine_configuration:config(),
+    last_time :: number()
 }).
 
 -opaque state() :: #state{}.
@@ -139,6 +140,10 @@ set_angle(Angle, State) ->
 -spec set_target(Target :: number(), State :: state()) -> {non_neg_integer(), state()}.
 set_target(Target, #state{config = Config} = State) ->
     Duty = target_to_duty(Target, Config),
+    %% ??
+    Now = erlang:system_time(millisecond),
+    io:format("set_target Now=~p Target=~p Duty=~p\n", [Now, Target, Duty]),
+
     ok = ledc:set_duty(?LEDC_MODE, ?LEDC_CHANNEL, Duty),
     ok = ledc:update_duty(?LEDC_MODE, ?LEDC_CHANNEL),
     target_duty_timeout(Duty, 0, State).
@@ -165,8 +170,12 @@ target_duty_timeout(Duty, MinTimeMS, #state{pre_min = PreMin, pre_max = PreMax} 
         max(abs(Duty - PreMin), abs(Duty - PreMax)) * ?SERVO_MAX_ANGLE_TIME_MS / ?SERVO_MAX_DUTY *
             ?SERVO_FREQ_PERIOD_US / (?SERVO_MAX_WIDTH_US - ?SERVO_MIN_WIDTH_US)
     ),
+    %% ??
+    Now = erlang:system_time(millisecond),
+    io:format("target_duty_timeout Now=~p Duty=~p PreMin=~p PreMax=~p MaxTime=~p\n", [Now, Duty, PreMin, PreMax, MaxTime]),
+
     {max(MaxTime, MinTimeMS), State#state{
-        pre_min = min(Duty, PreMin), pre_max = max(Duty, PreMax), target = Duty
+        pre_min = min(Duty, PreMin), pre_max = max(Duty, PreMax), target = Duty, last_time = Now
     }}.
 
 target_to_duty(Target, Config) ->
@@ -183,7 +192,11 @@ angle_to_duty(Angle) ->
     floor(Duty).
 
 -spec timeout(State :: state()) -> state().
-timeout(State) ->
+timeout(#state{last_time = LastTime} = State) ->
+    %% ??
+    Now = erlang:system_time(millisecond),
+    io:format("timeout Now=~p DeltaT=~p\n", [Now, Now - LastTime]),
+
     ledc:stop(?LEDC_MODE, ?LEDC_CHANNEL, 0),
     reset_target(State).
 
