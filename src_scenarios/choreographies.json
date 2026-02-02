@@ -249,7 +249,7 @@
   "poke_01042": "{aac, <<\"poke/01042.aac\">>}",
   "poke_01134": "{aac, <<\"poke/01134.aac\">>}",
   "poke_silent": "{servo, 19}, {wait, 109}, {servo, 0}",
-  "test_1": "{wait, 451}, {servo, 17}, {wait, 2540}, {servo, 85, 1592}, {wait, 2414}, {servo, 100, 590}, {wait, 1666}, {servo, 0, 1000}",
+  "test_1": "{servo, 81}, {wait, 411}, {servo, 18, 1643}",
   "tired_01006": "{servo, 54, 1429}, {wait, 1243}, {aac, <<\"tired/01006.aac\">>}, {wait, 140}, {servo, 67, 138}, {wait, 347}, {servo, 73}, {wait, 179}, {servo, 85, 527}",
   "tired_01164": "{servo, 22, 520}, {wait, 856}, {servo, 44, 417}, {wait, 550}, {servo, 62, 283}, {wait, 317}, {aac, <<\"tired/01164.aac\">>}, {wait, 169}, {servo, 68}, {wait, 445}, {servo, 75}",
   "tired_01247": "{wait, 509}, {servo, 50, 978}, {wait, 787}, {aac, <<\"tired/01247.aac\">>}, {wait, 440}, {servo, 63, 202}, {wait, 775}, {servo, 72}",

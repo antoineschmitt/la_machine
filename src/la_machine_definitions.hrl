@@ -193,8 +193,8 @@
 
 %% DEBUG
 % play only one mood (to debug)
--define(DEBUG_PLAY_ONLY_ONE_MOOD, 0).
+-define(DEBUG_PLAY_ONLY_ONE_MOOD, 1).
 % which mood
--define(DEBUG_PLAY_ONLY_ONE_MOOD_MOOD, upset).
+-define(DEBUG_PLAY_ONLY_ONE_MOOD_MOOD, test).
 % which scenario number (starting at 1, -1 means random)
--define(DEBUG_PLAY_ONLY_ONE_MOOD_INDEX, 56).
+-define(DEBUG_PLAY_ONLY_ONE_MOOD_INDEX, 1).
