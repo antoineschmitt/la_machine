@@ -459,7 +459,7 @@ class ScenarEditor {
     stroke(255, 0, 0, 127);
     line(x0, yyy, x0 + w0, yyy);
     // contact
-    yy = gSERVO_BUTTON_CONTACT_PERCENT/100.0; //<>// //<>// //<>// //<>//
+    yy = gSERVO_BUTTON_CONTACT_PERCENT/100.0; //<>// //<>// //<>// //<>// //<>//
     yyy = y0+h0-yy*h0/2;
     stroke(255, 0, 0, 127);
     line(x0, yyy, x0 + w0, yyy);
@@ -478,9 +478,9 @@ class ScenarEditor {
           float x2 = ms2pixels(sEditor2.anchort);
           noFill(); stroke(0, 255, 0);
           if (sEditor1 == null) {
-            x1 = 0; //<>// //<>// //<>// //<>//
+            x1 = 0; //<>// //<>// //<>// //<>// //<>//
             y2 = y1;
-            line(x1, y1, x2, y2); //<>// //<>// //<>// //<>//
+            line(x1, y1, x2, y2); //<>// //<>// //<>// //<>// //<>//
           } else {
             // we have sEditor1
             x1 = ms2pixels(sEditor1.anchort);
@@ -866,11 +866,11 @@ void ScenariosDisplay() {
   // buttons
   float yyy = gScen_y0 + 20;
   float dyyy = fontHeight + 6 + 2;
-  if (gScen_newBut == null) gScen_newBut  = new AsButton("New Scenario", gScen_x0 + gScen_w0 + 2, yyy, 0, fontHeight + 6);
+  if (gScen_newBut == null) gScen_newBut  = new AsButton("NEW scenario", gScen_x0 + gScen_w0 + 2, yyy, 0, fontHeight + 6);
   gScen_newBut.Display();
   yyy += dyyy;
 
-  if (gScen_saveBut == null) gScen_saveBut  = new AsButton("SAVE (json+erl)", gScen_x0 + gScen_w0 + 2, yyy, 0, fontHeight + 6);
+  if (gScen_saveBut == null) gScen_saveBut  = new AsButton("SAVE json", gScen_x0 + gScen_w0 + 2, yyy, 0, fontHeight + 6);
   gScen_saveBut.Display();
   yyy += dyyy;
   yyy += dyyy;
@@ -880,7 +880,7 @@ void ScenariosDisplay() {
   gScen_reloadBut.Display();
   yyy += dyyy;
 
-  if (gScen_parsePriv == null) gScen_parsePriv  = new AsButton("(RE)PARSE priv/", gScen_x0 + gScen_w0 + 2, yyy, 0, fontHeight + 6);
+  if (gScen_parsePriv == null) gScen_parsePriv  = new AsButton("(RE)PARSE priv", gScen_x0 + gScen_w0 + 2, yyy, 0, fontHeight + 6);
   gScen_parsePriv.Display();
   yyy += dyyy;
   
