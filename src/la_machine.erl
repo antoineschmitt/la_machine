@@ -162,60 +162,6 @@ prune_workaround() ->
     ok.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% do_process_click(WakeupCause, ButtonState, State)
-%% process_click(WakeupCause, ButtonState, DurMs, ClickCnt, IsPaused, State)
-%% BROKEN
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
--spec do_process_click(esp:esp_wakeup_cause() | undefined, on | off, la_machine_state:state()) ->
-    la_machine_state:state().
-
--if(?TRIPLECLICK == 1).
--spec process_click(
-    esp:esp_wakeup_cause() | undefined,
-    on | off,
-    non_neg_integer(),
-    non_neg_integer(),
-    non_neg_integer(),
-    la_machine_state:state()
-) -> la_machine_state:state().
-
-do_process_click(WakeupCause, ButtonState, State0) ->
-    DurMS = la_machine_state:get_ms_since_last_on(State0),
-    ClickCnt = la_machine_state:get_click_count(State0),
-    IsPaused = la_machine_state:get_is_paused(State0),
-    process_click(WakeupCause, ButtonState, DurMS, ClickCnt, IsPaused, State0).
-
-process_click(sleep_wakeup_gpio, on, _DurMs, _ClickCnt, _IsPaused, State) ->
-    % on : remember time
-    la_machine_state:set_last_on_now(State);
-process_click(sleep_wakeup_gpio, off, DurMs, ClickCnt, IsPaused, State) when
-    DurMs =< 1000 andalso ClickCnt == 2
-->
-    % off : triple click -> inverse paused
-    NewPaused = 1 - IsPaused,
-    io:format("NewPaused=~p\n", [NewPaused]),
-    la_machine_state:set_is_paused(NewPaused, State);
-process_click(sleep_wakeup_gpio, off, DurMs, ClickCnt, _IsPaused, State) when
-    % ClickCnt =< 2
-    DurMs =< 1000
-->
-    % off : click, and < three => increase count
-    la_machine_state:set_click_count(ClickCnt + 1, State);
-process_click(sleep_wakeup_gpio, off, _DurMs, _ClickCnt, _IsPaused, State) ->
-    % DurMs > 1000
-    % off : no click => set count to 0
-    la_machine_state:set_click_count(0, State);
-% all other cases
-process_click(_, _, _, _, _, State) ->
-    State.
-
--else.
-
-do_process_click(_, _, State) -> State.
-
--endif.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% action
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -271,10 +217,7 @@ compute_action(IsPausedNow, WakeupCause, ButtonState, AccelerometerState, State)
 run_configured(Config, WakeupCause, ButtonState) ->
     AccelerometerState = la_machine_lis3dh:setup(),
 
-    State0 = la_machine_state:load_state(),
-
-    %% process click
-    StateX = do_process_click(WakeupCause, ButtonState, State0),
+    StateX = la_machine_state:load_state(),
     IsPausedNow = la_machine_state:get_is_paused(StateX),
 
     State1 =
