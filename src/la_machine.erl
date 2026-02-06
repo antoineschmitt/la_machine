@@ -651,7 +651,7 @@ play_scenario(MoodScenar, ScenarioIx, Config) ->
 play_scenario_with_hit(MoodScenar, ScenarioIx, Config) ->
     %% ??
     Now3 = erlang:system_time(millisecond),
-    io:format("~p: play_scenario_with_hit MoodScenar=~p\n", [MoodScenar, Now3]),
+    io:format("~p: play_scenario_with_hit MoodScenar=~p\n", [Now3, MoodScenar]),
 
     Scenario = la_machine_scenarios:get(MoodScenar, ScenarioIx),
 
