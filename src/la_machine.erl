@@ -234,7 +234,6 @@ run_configured(Config, WakeupCause, ButtonState) ->
     %% ??
     Now3 = erlang:system_time(millisecond),
     io:format("~p: after la_machine_state:load_state\n", [Now3]),
-
     IsPausedNow = la_machine_state:get_is_paused(StateX),
 
     %% ??
