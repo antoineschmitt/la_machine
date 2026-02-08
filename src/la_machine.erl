@@ -364,9 +364,9 @@ change_moodp(waiting, player, _GestureCount, _Total_Gesture_Count, _SecondsElaps
 % joy : mood change ?
 change_moodp(joy, player, GestureCount, _Total_Gesture_Count, _SecondsElapsed, LastPlaySeq) ->
     Mood = joy,
-    % if more than MOOD_MIN_GESTURES gestures, one chance out of ?JOY_CALM_CHANCE to go to imitation
+    % if more than JOY_MIN_GESTURES gestures, one chance out of ?JOY_CALM_CHANCE to go to calm
     if
-        GestureCount > ?MOOD_MIN_GESTURES ->
+        GestureCount > ?JOY_MIN_GESTURES ->
             <<RandChange:56>> = crypto:strong_rand_bytes(7),
             if
                 (RandChange rem ?JOY_CALM_CHANCE) == 0 ->
