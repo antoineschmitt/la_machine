@@ -39,14 +39,13 @@
 
 % Accessors
 -export([
-    self_test_state/1,
-    closed_duty/1,
-    interrupt_duty/1,
+    configured/1,
+    closed_angle/1,
+    interrupt_angle/1,
     self_test_result/1,
-    set_closed_duty/2,
-    set_interrupt_duty/2,
-    set_self_test_result/3,
-    set_self_test_reported/1
+    set_closed_angle/2,
+    set_interrupt_angle/2,
+    set_self_test_result/3
 ]).
 
 -ifdef(TEST).
@@ -61,22 +60,22 @@
 -define(NVS_KEY, configuration).
 
 -record(config, {
-    closed_duty :: non_neg_integer(),
-    interrupt_duty :: non_neg_integer(),
+    configured :: boolean(),
+    closed_angle :: 0..180,
+    interrupt_angle :: 0..180,
     self_test_time :: non_neg_integer(),
     self_test_battery :: non_neg_integer(),
-    self_test_reported :: boolean(),
     self_test_result :: binary()
 }).
 
 -type config() :: #config{}.
 
 -define(DEFAULT_CONFIGURATION, #config{
-    closed_duty = ?DEFAULT_SERVO_CLOSED_DUTY,
-    interrupt_duty = ?DEFAULT_SERVO_INTERRUPT_DUTY,
+    configured = false,
+    closed_angle = ?DEFAULT_SERVO_CLOSED_ANGLE,
+    interrupt_angle = ?DEFAULT_SERVO_INTERRUPT_ANGLE,
     self_test_time = 0,
     self_test_battery = 0,
-    self_test_reported = false,
     self_test_result = <<>>
 }).
 
@@ -97,16 +96,11 @@ save(Config) ->
     Serialized = serialize_configuration(Config),
     esp:nvs_put_binary(?NVS_NAMESPACE, ?NVS_KEY, Serialized).
 
-self_test_state(#config{self_test_result = <<>>}) ->
-    uncalibrated;
-self_test_state(#config{self_test_reported = false}) ->
-    unreported;
-self_test_state(#config{}) ->
-    calibrated.
+configured(#config{configured = Configured}) -> Configured.
 
-closed_duty(#config{closed_duty = ClosedDuty}) -> ClosedDuty.
+closed_angle(#config{closed_angle = ClosedAngle}) -> ClosedAngle.
 
-interrupt_duty(#config{interrupt_duty = InterruptDuty}) -> InterruptDuty.
+interrupt_angle(#config{interrupt_angle = InterruptAngle}) -> InterruptAngle.
 
 self_test_result(#config{
     self_test_time = SelfTestTime,
@@ -115,45 +109,40 @@ self_test_result(#config{
 }) ->
     {SelfTestResult, SelfTestBattery, SelfTestTime}.
 
-set_closed_duty(#config{} = Config0, Duty) when
-    is_integer(Duty) andalso Duty >= 0 andalso Duty =< ?SERVO_MAX_DUTY
+set_closed_angle(#config{} = Config0, Angle) when
+    is_integer(Angle) andalso Angle >= 0 andalso Angle =< 180
 ->
     Config0#config{
-        closed_duty = Duty
+        closed_angle = Angle
     }.
 
-set_interrupt_duty(#config{} = Config0, Duty) when
-    is_integer(Duty) andalso Duty >= 0 andalso Duty =< ?SERVO_MAX_DUTY
+set_interrupt_angle(#config{} = Config0, Angle) when
+    is_integer(Angle) andalso Angle >= 0 andalso Angle =< 180
 ->
     Config0#config{
-        interrupt_duty = Duty
+        interrupt_angle = Angle
     }.
 
 set_self_test_result(#config{} = Config0, SelfTestResult, SelfTestBattery) ->
     Config0#config{
+        configured = true,
         self_test_time = erlang:system_time(millisecond),
         self_test_battery = SelfTestBattery,
         self_test_result = SelfTestResult
     }.
 
-set_self_test_reported(#config{} = Config0) ->
-    Config0#config{
-        self_test_reported = true
-    }.
-
 -spec deserialize_configuration(binary()) -> config().
 deserialize_configuration(
-    <<ClosedDuty:16, InterruptDuty:16, SelfTestTime:64, SelfTestBattery:16, SelfTestReportedByte,
-        SelfTestResult/binary>>
+    <<ClosedAngle, InterruptAngle, SelfTestTime:64, SelfTestBattery:16, SelfTestResult/binary>>
 ) when
-    ClosedDuty =< ?SERVO_MAX_DUTY andalso InterruptDuty =< ?SERVO_MAX_DUTY
+    ClosedAngle =< 180 andalso InterruptAngle =< 180
 ->
     #config{
-        closed_duty = ClosedDuty,
-        interrupt_duty = InterruptDuty,
+        configured = true,
+        closed_angle = ClosedAngle,
+        interrupt_angle = InterruptAngle,
         self_test_time = SelfTestTime,
         self_test_battery = SelfTestBattery,
-        self_test_reported = SelfTestReportedByte =/= 0,
         self_test_result = SelfTestResult
     };
 deserialize_configuration(_) ->
@@ -161,20 +150,16 @@ deserialize_configuration(_) ->
 
 -spec serialize_configuration(config()) -> binary().
 serialize_configuration(#config{
-    closed_duty = ClosedDuty,
-    interrupt_duty = InterruptDuty,
+    configured = true,
+    closed_angle = ClosedAngle,
+    interrupt_angle = InterruptAngle,
     self_test_time = SelfTestTime,
     self_test_battery = SelfTestBattery,
-    self_test_reported = SelfTestReported,
     self_test_result = SelfTestResult
 }) ->
-    SelfTestReportedByte =
-        case SelfTestReported of
-            false -> 0;
-            _ -> 1
-        end,
-    <<ClosedDuty:16, InterruptDuty:16, SelfTestTime:64, SelfTestBattery:16, SelfTestReportedByte,
-        SelfTestResult/binary>>.
+    <<ClosedAngle, InterruptAngle, SelfTestTime:64, SelfTestBattery:16, SelfTestResult/binary>>;
+serialize_configuration(#config{}) ->
+    <<>>.
 
 -ifdef(TEST).
 deserialize_configuration_test_() ->
@@ -189,76 +174,58 @@ deserialize_configuration_test_() ->
         ),
         ?_assertEqual(
             #config{
-                closed_duty = 0,
-                interrupt_duty = 0,
+                configured = true,
+                closed_angle = 0,
+                interrupt_angle = 0,
                 self_test_time = 0,
                 self_test_battery = 0,
-                self_test_reported = false,
                 self_test_result = <<"">>
             },
-            deserialize_configuration(<<0:16, 0:16, 0:64, 0:16, 0>>)
+            deserialize_configuration(<<0, 0, 0:64, 0:16>>)
         ),
         ?_assertEqual(
             #config{
-                closed_duty = 1547,
-                interrupt_duty = 682,
+                configured = true,
+                closed_angle = 125,
+                interrupt_angle = 30,
                 self_test_time = 42,
                 self_test_battery = 2100,
-                self_test_reported = false,
                 self_test_result = <<"OK">>
             },
-            deserialize_configuration(<<1547:16, 682:16, 42:64, 2100:16, 0, "OK">>)
-        ),
-        ?_assertEqual(
-            #config{
-                closed_duty = 1547,
-                interrupt_duty = 682,
-                self_test_time = 42,
-                self_test_battery = 2100,
-                self_test_reported = true,
-                self_test_result = <<"OK">>
-            },
-            deserialize_configuration(<<1547:16, 682:16, 42:64, 2100:16, 1, "OK">>)
+            deserialize_configuration(<<125, 30, 42:64, 2100:16, "OK">>)
         )
     ].
 
 serialize_configuration_test_() ->
     [
         ?_assertMatch(
-            <<0:16, 0:16, 0:64, 0, 0:16>>,
+            <<>>,
+            serialize_configuration(
+                #config{configured = false}
+            )
+        ),
+        ?_assertMatch(
+            <<0, 0, 0:64, 0:16>>,
             serialize_configuration(
                 #config{
-                    closed_duty = 0,
-                    interrupt_duty = 0,
+                    configured = true,
+                    closed_angle = 0,
+                    interrupt_angle = 0,
                     self_test_battery = 0,
                     self_test_time = 0,
-                    self_test_reported = false,
                     self_test_result = <<"">>
                 }
             )
         ),
         ?_assertMatch(
-            <<1547:16, 682:16, 42:64, 2100:16, 0, "OK">>,
+            <<125, 30, 42:64, 2100:16, "OK">>,
             serialize_configuration(
                 #config{
-                    closed_duty = 1547,
-                    interrupt_duty = 682,
+                    configured = true,
+                    closed_angle = 125,
+                    interrupt_angle = 30,
                     self_test_time = 42,
                     self_test_battery = 2100,
-                    self_test_reported = false,
-                    self_test_result = <<"OK">>
-                }
-            )
-        ),
-        ?_assertMatch(
-            <<1547:16, 682:16, 42:64, 2100:16, 1, "OK">>,
-            serialize_configuration(
-                #config{
-                    closed_duty = 1547,
-                    interrupt_duty = 682,
-                    self_test_time = 42,
-                    self_test_battery = 2100,
-                    self_test_reported = true,
                     self_test_result = <<"OK">>
                 }
             )

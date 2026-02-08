@@ -35,7 +35,7 @@
     power_on/1,
     power_off/0,
     reset/1,
-    set_duty/2,
+    set_angle/2,
     set_target/2,
     set_target/3,
     timeout/1
@@ -49,8 +49,7 @@
     pre_min :: number(),
     pre_max :: number(),
     target = undefined :: undefined | number(),
-    config :: la_machine_configuration:config(),
-    current_fade = undefined :: undefined | hardware | pid()
+    config :: la_machine_configuration:config()
 }).
 
 -opaque state() :: #state{}.
@@ -100,13 +99,11 @@ power_off() ->
     power_off_boost(),
     ok.
 
--spec power_on_boost() -> ok.
 power_on_boost() ->
     ok = gpio:init(?SERVO_EN_BOOST_GPIO),
     ok = gpio:set_pin_mode(?SERVO_EN_BOOST_GPIO, output),
     ok = gpio:digital_write(?SERVO_EN_BOOST_GPIO, 1).
 
--spec power_off_boost() -> ok.
 power_off_boost() ->
     ok = gpio:digital_write(?SERVO_EN_BOOST_GPIO, 0).
 
@@ -118,16 +115,16 @@ reset(Config) ->
     power_off().
 
 %% -----------------------------------------------------------------------------
-%% @param Duty duty value for the servo
+%% @param Angle angle for the servo (from 0 to 180)
 %% @param State current state
 %% @return a tuple with the time until the end of the move and the new state
-%% @doc Set the duty and move the servo as fast as possible. Used for
+%% @doc Set the angle and move the servo as fast as possible. Used for
 %% calibration purposes.
-%% Fails with function_clause if a fade is in progress.
 %% @end
 %% -----------------------------------------------------------------------------
--spec set_duty(Duty :: non_neg_integer(), State :: state()) -> {non_neg_integer(), state()}.
-set_duty(Duty, #state{current_fade = undefined} = State) ->
+-spec set_angle(Angle :: 0..180, State :: state()) -> {non_neg_integer(), state()}.
+set_angle(Angle, State) ->
+    Duty = angle_to_duty(Angle),
     ok = ledc:set_duty(?LEDC_MODE, ?LEDC_CHANNEL, Duty),
     ok = ledc:update_duty(?LEDC_MODE, ?LEDC_CHANNEL),
     target_duty_timeout(Duty, 0, State).
@@ -136,12 +133,11 @@ set_duty(Duty, #state{current_fade = undefined} = State) ->
 %% @param Target target for the servo (from 0 to 100)
 %% @param State current state
 %% @return a tuple with the time until the end of the move and the new state
-%% @doc Set the target and move the servo as fast as possible.
-%% Fails with function_clause if a fade is in progress.
+%% @doc Set the target and move the servo as fast as possible
 %% @end
 %% -----------------------------------------------------------------------------
 -spec set_target(Target :: number(), State :: state()) -> {non_neg_integer(), state()}.
-set_target(Target, #state{config = Config, current_fade = undefined} = State) ->
+set_target(Target, #state{config = Config} = State) ->
     Duty = target_to_duty(Target, Config),
     ok = ledc:set_duty(?LEDC_MODE, ?LEDC_CHANNEL, Duty),
     ok = ledc:update_duty(?LEDC_MODE, ?LEDC_CHANNEL),
@@ -153,157 +149,60 @@ set_target(Target, #state{config = Config, current_fade = undefined} = State) ->
 %% actually required to move the servo
 %% @param State current state
 %% @return a tuple with the time until the end of the move and the new state
-%% @doc Set the target but slowly fade towards duty.
-%% Fails with function_clause if a fade is in progress.
+%% @doc Set the target but slowly fade towards duty
 %% @end
 %% -----------------------------------------------------------------------------
 -spec set_target(Target :: number(), TimeMS :: pos_integer(), State :: state()) ->
     {non_neg_integer(), state()}.
-set_target(
-    Target,
-    TimeMS,
-    #state{config = Config, pre_min = PreMin, pre_max = PreMax, current_fade = undefined} = State
-) ->
+set_target(Target, TimeMS, #state{config = Config} = State) ->
     Duty = target_to_duty(Target, Config),
-    {FadePid, ActualTimeMS} = start_fade(PreMin, PreMax, Duty, TimeMS),
-    target_duty_timeout(Duty, ActualTimeMS, State#state{current_fade = FadePid}).
+    ok = ledc:set_fade_with_time(?LEDC_MODE, ?LEDC_CHANNEL, Duty, TimeMS),
+    ok = ledc:fade_start(?LEDC_MODE, ?LEDC_CHANNEL, ?LEDC_FADE_NO_WAIT),
+    target_duty_timeout(Duty, TimeMS, State).
 
--spec target_duty_timeout(non_neg_integer(), non_neg_integer(), state()) ->
-    {non_neg_integer(), state()}.
 target_duty_timeout(Duty, MinTimeMS, #state{pre_min = PreMin, pre_max = PreMax} = State) ->
     MaxTime = ceil(
-        max(abs(Duty - PreMin), abs(Duty - PreMax)) * ?SERVO_FULL_RANGE_TIME_MS / ?SERVO_MAX_DUTY *
+        max(abs(Duty - PreMin), abs(Duty - PreMax)) * ?SERVO_MAX_ANGLE_TIME_MS / ?SERVO_MAX_DUTY *
             ?SERVO_FREQ_PERIOD_US / (?SERVO_MAX_WIDTH_US - ?SERVO_MIN_WIDTH_US)
     ),
     {max(MaxTime, MinTimeMS), State#state{
         pre_min = min(Duty, PreMin), pre_max = max(Duty, PreMax), target = Duty
     }}.
 
--spec target_to_duty(number(), la_machine_configuration:config()) -> non_neg_integer().
 target_to_duty(Target, Config) ->
-    InterruptDuty = la_machine_configuration:interrupt_duty(Config),
-    ClosedDuty = la_machine_configuration:closed_duty(Config),
-    ClosedDuty + Target * (InterruptDuty - ClosedDuty) div 100.
+    InterruptAngle = la_machine_configuration:interrupt_angle(Config),
+    ClosedAngle = la_machine_configuration:closed_angle(Config),
+    Angle = Target * (InterruptAngle - ClosedAngle) / 100 + ClosedAngle,
+    angle_to_duty(Angle).
 
--spec compute_fade_params(non_neg_integer(), non_neg_integer()) ->
-    {hardware, pos_integer(), pos_integer()} | software.
-compute_fade_params(0, _TotalCycles) ->
-    {hardware, 1, 1};
-compute_fade_params(DutyDelta, 0) ->
-    {hardware, max(1, DutyDelta), 1};
-compute_fade_params(DutyDelta, TotalCycles) when DutyDelta >= TotalCycles ->
-    ScaleFloor = DutyDelta div TotalCycles,
-    ScaleCeil = ScaleFloor + 1,
-    StepsFloor = (DutyDelta + ScaleFloor - 1) div ScaleFloor,
-    StepsCeil = (DutyDelta + ScaleCeil - 1) div ScaleCeil,
-    ErrFloor = abs(StepsFloor - TotalCycles),
-    ErrCeil = abs(StepsCeil - TotalCycles),
-    {BestScale, BestSteps} =
-        case ErrFloor =< ErrCeil of
-            true -> {ScaleFloor, StepsFloor};
-            false -> {ScaleCeil, StepsCeil}
-        end,
-    case BestSteps * 10 > TotalCycles * 11 orelse BestSteps * 10 < TotalCycles * 9 of
-        true -> software;
-        false -> {hardware, BestScale, 1}
-    end;
-compute_fade_params(DutyDelta, TotalCycles) ->
-    CycleFloor = TotalCycles div DutyDelta,
-    CycleCeil = CycleFloor + 1,
-    TotalFloor = DutyDelta * CycleFloor,
-    TotalCeil = DutyDelta * CycleCeil,
-    ErrFloor = abs(TotalFloor - TotalCycles),
-    ErrCeil = abs(TotalCeil - TotalCycles),
-    {BestCycle, BestTotal} =
-        case ErrFloor =< ErrCeil of
-            true -> {CycleFloor, TotalFloor};
-            false -> {CycleCeil, TotalCeil}
-        end,
-    case BestTotal * 10 > TotalCycles * 11 orelse BestTotal * 10 < TotalCycles * 9 of
-        true -> software;
-        false -> {hardware, 1, BestCycle}
-    end.
-
--spec start_fade(non_neg_integer(), non_neg_integer(), non_neg_integer(), pos_integer()) ->
-    {hardware | pid(), non_neg_integer()}.
-start_fade(CurrentDuty, CurrentDuty, TargetDuty, TimeMS) ->
-    DutyDelta = abs(TargetDuty - CurrentDuty),
-    TotalCycles = TimeMS * ?SERVO_FREQ_HZ div 1000,
-    case compute_fade_params(DutyDelta, TotalCycles) of
-        {hardware, Scale, CycleNum} ->
-            ok = ledc:set_fade_step_and_start(
-                ?LEDC_MODE, ?LEDC_CHANNEL, TargetDuty, Scale, CycleNum, ?LEDC_FADE_NO_WAIT
-            ),
-            Steps = (DutyDelta + Scale - 1) div Scale,
-            ActualTimeMS = Steps * CycleNum * 1000 div ?SERVO_FREQ_HZ,
-            {hardware, ActualTimeMS};
-        software ->
-            PeriodMS = 1000 div ?SERVO_FREQ_HZ,
-            Direction =
-                case TargetDuty >= CurrentDuty of
-                    true -> 1;
-                    false -> -1
-                end,
-            Pid = spawn_link(
-                fun() ->
-                    software_fade_loop(1, TotalCycles, CurrentDuty, DutyDelta, Direction, PeriodMS)
-                end
-            ),
-            {Pid, TotalCycles * PeriodMS}
-    end;
-start_fade(_PreMin, _PreMax, TargetDuty, TimeMS) ->
-    ok = ledc:set_fade_time_and_start(
-        ?LEDC_MODE, ?LEDC_CHANNEL, TargetDuty, TimeMS, ?LEDC_FADE_NO_WAIT
-    ),
-    {hardware, TimeMS}.
-
--spec software_fade_loop(
-    pos_integer(), pos_integer(), non_neg_integer(), non_neg_integer(), -1 | 1, pos_integer()
-) -> ok.
-software_fade_loop(Step, TotalCycles, _CurrentDuty, _DutyDelta, _Direction, _PeriodMS) when
-    Step > TotalCycles
-->
-    ok;
-software_fade_loop(Step, TotalCycles, CurrentDuty, DutyDelta, Direction, PeriodMS) ->
-    timer:sleep(PeriodMS),
-    Duty = CurrentDuty + Direction * (Step * DutyDelta div TotalCycles),
-    ok = ledc:set_duty_and_update(?LEDC_MODE, ?LEDC_CHANNEL, Duty, 0),
-    software_fade_loop(Step + 1, TotalCycles, CurrentDuty, DutyDelta, Direction, PeriodMS).
+angle_to_duty(Angle) ->
+    AngleUS =
+        (Angle / ?SERVO_MAX_ANGLE) * (?SERVO_MAX_WIDTH_US - ?SERVO_MIN_WIDTH_US) +
+            ?SERVO_MIN_WIDTH_US,
+    Duty = AngleUS * ?SERVO_MAX_DUTY / ?SERVO_FREQ_PERIOD_US,
+    floor(Duty).
 
 -spec timeout(State :: state()) -> state().
-timeout(#state{current_fade = FadePid} = State) ->
-    case FadePid of
-        undefined ->
-            ok;
-        hardware ->
-            ledc:fade_stop(?LEDC_MODE, ?LEDC_CHANNEL);
-        Pid when is_pid(Pid) ->
-            MonRef = erlang:monitor(process, Pid),
-            receive
-                {'DOWN', MonRef, process, Pid, _} -> ok
-            end
-    end,
+timeout(State) ->
     ledc:stop(?LEDC_MODE, ?LEDC_CHANNEL, 0),
-    State1 = reset_target(State),
-    State1#state{current_fade = undefined}.
+    reset_target(State).
 
--spec reset_target(state()) -> state().
 reset_target(#state{target = Target} = State) ->
     State#state{pre_min = Target, pre_max = Target, target = undefined}.
 
 -ifdef(TEST).
-% Values depend on ?DEFAULT_SERVO_INTERRUPT_DUTY and ?DEFAULT_SERVO_CLOSED_DUTY
+% Values depend on ?DEFAULT_SERVO_INTERRUPT_ANGLE and ?DEFAULT_SERVO_CLOSED_ANGLE
 -if(?HARDWARE_REVISION =:= proto_20241023).
 target_to_duty_test_() ->
     [
-        ?_assertEqual(864, target_to_duty(0, la_machine_configuration:default())),
-        ?_assertEqual(1911, target_to_duty(100, la_machine_configuration:default()))
+        ?_assertEqual(432, target_to_duty(0, la_machine_configuration:default())),
+        ?_assertEqual(955, target_to_duty(100, la_machine_configuration:default()))
     ].
 -elif(?HARDWARE_REVISION =:= proto_20260106).
 target_to_duty_test_() ->
     [
-        ?_assertEqual(1547, target_to_duty(0, la_machine_configuration:default())),
-        ?_assertEqual(682, target_to_duty(100, la_machine_configuration:default()))
+        ?_assertEqual(773, target_to_duty(0, la_machine_configuration:default())),
+        ?_assertEqual(341, target_to_duty(100, la_machine_configuration:default()))
     ].
 -else.
 -error({unsupported_hardware_revision, ?HARDWARE_REVISION}).
@@ -332,7 +231,7 @@ target_duty_timeout_test_() ->
                     })
                 ),
                 ?_assertMatch(
-                    {313, #state{
+                    {626, #state{
                         pre_min = 318,
                         pre_max = 887,
                         target = 887,
@@ -343,7 +242,7 @@ target_duty_timeout_test_() ->
                     })
                 ),
                 ?_assertMatch(
-                    {600, #state{
+                    {626, #state{
                         pre_min = 318,
                         pre_max = 887,
                         target = 887,
@@ -354,7 +253,7 @@ target_duty_timeout_test_() ->
                     })
                 ),
                 ?_assertMatch(
-                    {313, #state{
+                    {626, #state{
                         pre_min = 318,
                         pre_max = 887,
                         target = 318,
@@ -368,7 +267,7 @@ target_duty_timeout_test_() ->
         end
     }.
 
-% A full servo range movement should take SERVO_FULL_RANGE_TIME_MS
+% A full range movement (0° to 180°) should take SERVO_MAX_ANGLE_TIME_MS
 target_duty_timeout_full_range_test_() ->
     {
         setup,
@@ -379,19 +278,17 @@ target_duty_timeout_full_range_test_() ->
             ok
         end,
         fun(Config) ->
-            %% Duty values corresponding to the servo's physical range limits
-            %% (500µs and 2500µs pulse widths)
-            Duty0 = 409,
-            Duty180 = 2047,
+            Duty0 = angle_to_duty(0),
+            Duty180 = angle_to_duty(180),
             [
                 ?_assertMatch(
-                    {?SERVO_FULL_RANGE_TIME_MS, _},
+                    {?SERVO_MAX_ANGLE_TIME_MS, _},
                     target_duty_timeout(Duty180, 0, #state{
                         pre_min = Duty0, pre_max = Duty0, config = Config
                     })
                 ),
                 ?_assertMatch(
-                    {?SERVO_FULL_RANGE_TIME_MS, _},
+                    {?SERVO_MAX_ANGLE_TIME_MS, _},
                     target_duty_timeout(Duty0, 0, #state{
                         pre_min = Duty180, pre_max = Duty180, config = Config
                     })
@@ -432,22 +329,4 @@ reset_target_test_() ->
             ]
         end
     }.
-
-compute_fade_params_test_() ->
-    [
-        % Analysis example: ratio between 1 and 2, both options exceed 10%
-        ?_assertEqual(software, compute_fade_params(367, 218)),
-        % Exact ratio: 218/218 = 1, Scale=1 gives exactly 218 steps
-        ?_assertEqual({hardware, 1, 1}, compute_fade_params(218, 218)),
-        % DutyDelta < TotalCycles: CycleFloor=2, total=200, error=8.3%
-        ?_assertEqual({hardware, 1, 2}, compute_fade_params(100, 218)),
-        % High scale: ScaleCeil=9, steps=48, error=4%
-        ?_assertEqual({hardware, 9, 1}, compute_fade_params(432, 50)),
-        % DutyDelta=0: no-op
-        ?_assertEqual({hardware, 1, 1}, compute_fade_params(0, 218)),
-        % TotalCycles=0: immediate
-        ?_assertEqual({hardware, 432, 1}, compute_fade_params(432, 0)),
-        % Both zero
-        ?_assertEqual({hardware, 1, 1}, compute_fade_params(0, 0))
-    ].
 -endif.

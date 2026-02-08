@@ -114,20 +114,34 @@ run() ->
 
     configure_gpios(),
     ButtonState = read_button(),
+
     Config = la_machine_configuration:load(),
-    SelfTestState = la_machine_configuration:self_test_state(Config),
+    Charging = la_machine_battery:is_charging(),
+    BatteryLevel = la_machine_battery:get_level(),
+
+    case WakeupCause of
+        undefined ->
+            % Not a regular wake-up, report self-test
+            la_machine_selftest:report(Config, true);
+        sleep_wakeup_timer when ButtonState =:= off ->
+            case {Charging, BatteryLevel} of
+                {true, _} ->
+                    la_machine_selftest:report(Config, true);
+                {false, {ok, 100}} ->
+                    la_machine_selftest:report(Config, true);
+                _ ->
+                    la_machine_selftest:report(Config, false)
+            end;
+        _ ->
+            ok
+    end,
 
     SleepTimer =
-        case SelfTestState of
-            uncalibrated ->
-                la_machine_selftest:run(Config, WakeupCause, ButtonState);
-            unreported ->
-                Timer = la_machine_selftest:report(Config),
-                Config1 = la_machine_configuration:set_self_test_reported(Config),
-                la_machine_configuration:save(Config1),
-                Timer;
-            calibrated ->
-                run_configured(Config, WakeupCause, ButtonState)
+        case la_machine_configuration:configured(Config) of
+            true ->
+                run_configured(Config, WakeupCause, ButtonState);
+            false ->
+                la_machine_selftest:run(Config, WakeupCause, ButtonState)
         end,
     SleepMS = setup_sleep(SleepTimer),
     unconfigure_watchdog(WatchdogUser),
@@ -197,9 +211,7 @@ compute_action(IsPausedNow, WakeupCause, ButtonState, AccelerometerState, State)
 -endif.
 
 -spec run_configured(
-    la_machine_configuration:config(),
-    esp:esp_wakeup_cause() | undefined,
-    on | off
+    la_machine_configuration:config(), esp:esp_wakeup_cause() | undefined, on | off
 ) ->
     non_neg_integer().
 run_configured(Config, WakeupCause, ButtonState) ->
@@ -254,8 +266,9 @@ run_configured(Config, WakeupCause, ButtonState) ->
                 la_machine_servo:reset(Config),
                 StateX
         end,
+    SleepTimer = do_compute_sleep_timer(State1),
     la_machine_state:save_state(State1),
-    do_compute_sleep_timer(State1).
+    SleepTimer.
 
 % action
 -spec action(
@@ -375,7 +388,6 @@ change_moodp(imitation, player, GestureCount, _Total_Gesture_Count, _SecondsElap
 % dialectic : mood change ?
 change_moodp(dialectic, player, GestureCount, _Total_Gesture_Count, _SecondsElapsed, LastPlaySeq) ->
     change_game_mood(dialectic, GestureCount, LastPlaySeq);
-
 % upset, tired, excited : mood change ?
 change_moodp(Mood, player, GestureCount, _Total_Gesture_Count, _SecondsElapsed, LastPlaySeq) when
     Mood == upset orelse Mood == tired orelse Mood == excited
@@ -561,20 +573,9 @@ play_random_scenario_with_hit(MoodScenar, LastPlaySeq, Config) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 -spec play_scenario(atom(), pos_integer(), la_machine_configuration:config()) -> pos_integer().
 play_scenario(MoodScenar, ScenarioIx, Config) ->
-    Scenario0 = la_machine_scenarios:get(MoodScenar, ScenarioIx),
-    ScenarioWithClose =
-        case Scenario0 of
-            [] ->
-                [{servo, 0}];
-            _ ->
-                case lists:last(Scenario0) of
-                    {servo, 0} -> Scenario0;
-                    {servo, 0, _Timeout} -> Scenario0;
-                    _ -> Scenario0 ++ [{servo, 0}]
-                end
-        end,
+    Scenario = la_machine_scenarios:get(MoodScenar, ScenarioIx),
     {ok, Pid} = la_machine_player:start_link(Config),
-    ok = la_machine_player:play(Pid, ScenarioWithClose),
+    ok = la_machine_player:play(Pid, Scenario),
     ok = la_machine_player:stop(Pid),
     % reset audio and servo
     la_machine_audio:reset(),
@@ -594,10 +595,8 @@ play_scenario_with_hit(MoodScenar, ScenarioIx, Config) ->
     ButtonState = read_button(),
     io:format("   after play ButtonState=~s\n", [ButtonState]),
     if
-        ButtonState == on ->
-            play_random_hit(Pid);
-        true ->
-            ok = la_machine_player:play(Pid, [{servo, 0}])
+        ButtonState == on -> play_random_hit(Pid);
+        true -> true
     end,
     ok = la_machine_player:stop(Pid),
     % reset audio and servo
