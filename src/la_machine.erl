@@ -42,6 +42,7 @@
     reset
     | play_poke
     | play_meuh
+    | play_battery_low
     | {
         play_scenario,
         Mood :: atom(),
@@ -248,6 +249,9 @@ run_normal(Config, WakeupCause, ButtonState, State0) ->
             play_meuh ->
                 play_meuh(Config),
                 State0;
+            play_battery_low ->
+                play_battery_low(Config),
+                State0;
             play_poke ->
                 % the poke
                 PokeIndex = la_machine_state:get_poke_index(State0),
@@ -310,9 +314,23 @@ action(_WakeupCause, _ButtonState, replaced, _State) ->
     play_poke;
 % button on
 action(_WakeupCause, on, ok, State) ->
-    {Mood, LastPlaySeq, GestureCount, LastPlayTime} = la_machine_state:get_play_info(State),
-    SecondsElapsed = erlang:system_time(second) - LastPlayTime,
-    {play, player, Mood, SecondsElapsed, LastPlaySeq, GestureCount};
+    %% if battery low, force play_battery_low
+    {Battery_status, Battery_level} = la_machine_battery:get_level(),
+    BatteryLow = case Battery_status of
+        ok -> 
+            if
+                Battery_level =< 20 -> true;
+                true -> false
+            end;
+        error -> true
+    end,
+    if
+        BatteryLow -> play_battery_low;
+        true ->
+            {Mood, LastPlaySeq, GestureCount, LastPlayTime} = la_machine_state:get_play_info(State),
+            SecondsElapsed = erlang:system_time(second) - LastPlayTime,
+            {play, player, Mood, SecondsElapsed, LastPlaySeq, GestureCount}
+    end;
 % button off
 action(sleep_wakeup_gpio, off, ok, _State) ->
     reset;
@@ -514,6 +532,20 @@ play_meuh(Config) ->
 -spec play_poke(la_machine_configuration:config()) -> pos_integer().
 play_poke(Config) ->
     play_random_scenario(poke, undefined, Config).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% play_battery_low
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+-spec play_battery_low(la_machine_configuration:config()) -> pos_integer().
+play_battery_low(Config) ->
+    play_scenario_with_hit(system, 1, Config).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% play_welcome
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -spec play_welcome(la_machine_configuration:config()) -> pos_integer().
+% play_welcome(Config) ->
+%     play_scenario_with_hit(system, 2, Config).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% play_random_hit

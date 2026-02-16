@@ -102,7 +102,7 @@
 -define(SERVO_FREQ_PERIOD_US, (1000000 / ?SERVO_FREQ_HZ)).
 -define(SERVO_MAX_DUTY, ((1 bsl ?LEDC_DUTY_RESOLUTION) - 1)).
 % Time for full servo range in ms. Servo is 0.3s/60°, full 180° = 900ms.
--define(SERVO_FULL_RANGE_TIME_MS, 900).
+-define(SERVO_FULL_RANGE_TIME_MS, 1350).
 
 % Maximum run time. If La machine runs in more than this, watchdog is triggered,
 % La machine panics and state stored in RTC Slow memory is ignored on next boot.
