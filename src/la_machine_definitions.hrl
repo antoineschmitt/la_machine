@@ -96,17 +96,32 @@
 -error({unsupported_hardware_revision, ?HARDWARE_REVISION}).
 -endif.
 
+% proto 20260106 currently has a 95 degrees course:
+% FullDutyRange (180°) = ?SERVO_MAX_DUTY * (?SERVO_MAX_WIDTH_US - ?SERVO_MIN_WIDTH_US) / ?SERVO_FREQ_PERIOD_US
+%                      = 16383 * (2500 - 500) / 20000
+%                      = 1638.3
+% ServoDutyRange = ?DEFAULT_SERVO_CLOSED_DUTY - ?DEFAULT_SERVO_INTERRUPT_DUTY
+%                = 1547 - 682
+%                = 865
+% ServoDegreeRange = ServoDutyRange / FullDutyRange * 180
+%                  = 865 / 1638.3 * 180
+%                  = 95.0 degrees
+
 -define(SERVO_MAX_WIDTH_US, 2500).
 -define(SERVO_MIN_WIDTH_US, 500).
 -define(SERVO_FREQ_HZ, 50).
 -define(SERVO_FREQ_PERIOD_US, (1000000 / ?SERVO_FREQ_HZ)).
 -define(SERVO_MAX_DUTY, ((1 bsl ?LEDC_DUTY_RESOLUTION) - 1)).
-% Time for full servo range in ms. Servo is 0.3s/60°, full 180° = 900ms.
+% Time for full servo range in ms. Full 180° takes between 1200 and 1350ms
 -define(SERVO_FULL_RANGE_TIME_MS, 1350).
 
 % Maximum run time. If La machine runs in more than this, watchdog is triggered,
 % La machine panics and state stored in RTC Slow memory is ignored on next boot.
 -define(WATCHDOG_TIMEOUT_MS, 60000).
+
+-define(SERVO_CHARGING_POSITION, 70).
+% When charging, wakeup constantly
+-define(SERVO_CHARGING_TIMEOUT, 0).
 
 %% Moods
 
@@ -152,6 +167,9 @@
 -define(GAME_SHORT_DUR_S, 2).
 % Max duration of medium gestures in games mood
 -define(GAME_MEDIUM_DUR_S, 4).
+
+-define(BATTERY_LOW_SYSTEM_SCENARIO, 1).
+-define(WELCOME_SYSTEM_SCENARIO, 2).
 
 %% DEBUG
 % play only one mood (to debug)
