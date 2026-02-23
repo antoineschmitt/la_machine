@@ -724,7 +724,6 @@ play_random_hit(Pid) ->
     ScenarioIx = random_num_upto_butnot(ScenarioCount, undefined),
     io:format("play_random_hit=~p\n", [ScenarioIx]),
     Scenario = la_machine_scenarios:get(MoodScenar, ScenarioIx),
-    % could be adapted to length of hit
     Scenario_Full = Scenario ++ [{servo, 100}, {wait, 200}, {servo, 0}],
     ok = la_machine_player:play(Pid, Scenario_Full),
     ScenarioIx.
@@ -790,9 +789,25 @@ play_scenario(MoodScenar, ScenarioIx, Config) ->
     pos_integer().
 play_scenario_with_hit(MoodScenar, ScenarioIx, Config) ->
     Scenario = la_machine_scenarios:get(MoodScenar, ScenarioIx),
+    % add random wait at beginning if game_*
+    InitialWait = 
+        if
+            MoodScenar =:= game_short orelse MoodScenar =:= game_medium orelse MoodScenar =:= game_long ->
+                MinWait = 0,
+                MaxWait = 1200,
+                <<RandS:56>> = crypto:strong_rand_bytes(7),
+                WaitDelay = (MinWait + (RandS rem (MaxWait - MinWait))),
+                WaitDelay;
+            true -> 0
+        end,
+    ScenarioWithInitialWait =
+        if
+            InitialWait > 0 -> [{wait, InitialWait}] ++ Scenario;
+            true -> Scenario
+        end,
     {ok, Pid} = la_machine_player:start_link(Config),
     ScenarioStart = erlang:system_time(millisecond),
-    ok = la_machine_player:play(Pid, Scenario),
+    ok = la_machine_player:play(Pid, ScenarioWithInitialWait),
     ScenarioEnd = erlang:system_time(millisecond),
     % play hit if needed
     ButtonState = read_button(),
@@ -807,9 +822,9 @@ play_scenario_with_hit(MoodScenar, ScenarioIx, Config) ->
         end,
     HitEnd = erlang:system_time(millisecond),
     ok = la_machine_player:stop(Pid),
-    io:format("Played scenario=~p index=~p duration=~pms hit=~p hit_duration=~pms time=~p\n", [
+    io:format("Played scenario=~p index=~p duration=~pms initial_wait=~pms hit=~p hit_duration=~pms time=~p\n", [
         MoodScenar, ScenarioIx, ScenarioEnd - ScenarioStart,
-        HitIx, HitEnd - ScenarioEnd, ScenarioEnd
+        InitialWait, HitIx, HitEnd - ScenarioEnd, ScenarioEnd
     ]),
     ScenarioIx.
 
@@ -872,7 +887,10 @@ compute_sleep_timer(State, calling) ->
     Delay;
 % other cases : delay first calling
 compute_sleep_timer(_State, Mood) ->
-    Delay = ?CALLING_START_DELAY_S,
+    DelayMin = ?CALLING_START_DELAY_S - (?CALLING_START_DELAY_S div 5),
+    DelayMax = ?CALLING_START_DELAY_S + (?CALLING_START_DELAY_S div 5),
+    <<RandS:56>> = crypto:strong_rand_bytes(7),
+    Delay = (DelayMin + (RandS rem (DelayMax - DelayMin))),
     io:format("compute_sleep_timer ~s : sleep default ~ps\n", [Mood, Delay]),
     Delay.
 
