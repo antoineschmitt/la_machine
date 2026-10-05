@@ -114,10 +114,26 @@
 -define(SERVO_MAX_DUTY, ((1 bsl ?LEDC_DUTY_RESOLUTION) - 1)).
 % Time for full servo range in ms. Full 180° takes between 1200 and 1350ms
 -define(SERVO_FULL_RANGE_TIME_MS, 1350).
+% Time to wait after the LEDC channel is configured in power_on, so the
+% initial duty is applied (one 50 Hz period is 20 ms) before a fade starts.
+-define(SERVO_POWER_ON_SETTLE_MS, 25).
 
 % Maximum run time. If La machine runs in more than this, watchdog is triggered,
 % La machine panics and state stored in RTC Slow memory is ignored on next boot.
 -define(WATCHDOG_TIMEOUT_MS, 60000).
+
+%% Calibration (self-test)
+% The self-test measures the contact duty: the servo duty where the arm touches
+% the button just before switching it off. Both stored positions derive from it.
+% closed_duty = contact + SERVO_CLOSED_OFFSET_DUTY: arm fully retracted, lid
+% closed. The original formula used 735 (85% of the 865 duty course); on some
+% machines the lid stays ajar with that value, 820 was needed on one of them.
+% 1 degree is about 9 duty units.
+-define(SERVO_CLOSED_OFFSET_DUTY, 820).
+% interrupt_duty = contact - SERVO_INTERRUPT_MARGIN_DUTY: how far past the
+% contact point the arm goes to switch the button off. The original value was
+% 130 (about 14 degrees), judged too far; 100 is about 11 degrees.
+-define(SERVO_INTERRUPT_MARGIN_DUTY, 100).
 
 -define(SERVO_CHARGING_POSITION, 70).
 % When charging, wakeup constantly

@@ -43,19 +43,27 @@
 
 -define(SELF_TEST_EXIT_WAKEUP_TIMER, 5).
 -define(SELF_TEST_INIT_WAKEUP_TIMER, 60).
--define(SERVO_SELF_TEST_DUTY,
-    ((4 * ?DEFAULT_SERVO_INTERRUPT_DUTY + ?DEFAULT_SERVO_CLOSED_DUTY) div 5)
-).
+% Start position of the calibration sweep. The arm must not touch the button
+% there, even if the arm was mounted on the servo spline up to 1.5 tooth
+% (one tooth is 14.4 degrees, about 131 duty units) too close to the button.
+% The reference contact point is 812; the historical start was 855.
+-define(SERVO_SELF_TEST_DUTY, 1040).
 
-% Total arm course in duty units.
--define(DUTY_COURSE, 865).
-% Expected range for the 85% target duty (where the arm just touches the
-% button but doesn't push it off).
--define(MIN_85_DUTY, 660).
--define(MAX_85_DUTY, 864).
+% Expected range for the contact duty (where the arm just touches the
+% button but doesn't push it off). Historically called the 85% duty as it sits
+% at 85% of the 865 duty arm course on the reference machine (812).
+% The window is about +/- 1.5 spline tooth around the reference, to absorb
+% the arm being mounted by eye in factory. Derived positions stay within the
+% servo pulse limits (500..2500 us, duty 410..2048) over the whole window.
+-define(MIN_85_DUTY, 640).
+-define(MAX_85_DUTY, 1000).
 
 % Duty units are on 14 bits (16384)
 -define(DUTY_CALIBRATION_STEP, 16).
+
+% Extra time (ms) given to the servo to actually reach the closed position
+% at the end of the calibration, before the servo is powered off.
+-define(SERVO_CLOSE_MARGIN_MS, 500).
 
 -spec report(la_machine_configuration:config()) -> ok.
 report(Config0) ->
@@ -243,12 +251,19 @@ test_servo_calibrate_loop(Config0, Servo0, Duty) ->
             Duty85 = Duty + ?DUTY_CALIBRATION_STEP,
             case Duty85 >= ?MIN_85_DUTY andalso Duty85 =< ?MAX_85_DUTY of
                 true ->
-                    ClosedDuty = Duty85 + (85 * ?DUTY_COURSE) div 100,
-                    InterruptDuty = ClosedDuty - ?DUTY_COURSE,
+                    % Both positions are derived from the measured contact point,
+                    % see SERVO_CLOSED_OFFSET_DUTY / SERVO_INTERRUPT_MARGIN_DUTY.
+                    ClosedDuty = Duty85 + ?SERVO_CLOSED_OFFSET_DUTY,
+                    InterruptDuty = Duty85 - ?SERVO_INTERRUPT_MARGIN_DUTY,
                     {WaitTimeMS1, Servo2} = la_machine_servo:set_duty(InterruptDuty, Servo1),
                     timer:sleep(WaitTimeMS1),
                     {WaitTimeMS2, _Servo3} = la_machine_servo:set_duty(ClosedDuty, Servo2),
-                    timer:sleep(WaitTimeMS2),
+                    % WaitTimeMS2 is the nominal unloaded travel time. The arm
+                    % carries the lid on this move and the servo slows down on
+                    % the last degrees, so give it a margin before power_off
+                    % cuts the PWM, otherwise the arm stops short of the
+                    % closed position and the lid stays ajar.
+                    timer:sleep(WaitTimeMS2 + ?SERVO_CLOSE_MARGIN_MS),
                     Config1 = la_machine_configuration:set_closed_duty(Config0, ClosedDuty),
                     Config2 = la_machine_configuration:set_interrupt_duty(Config1, InterruptDuty),
                     {ok, Config2};

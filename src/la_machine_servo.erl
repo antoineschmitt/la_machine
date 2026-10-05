@@ -87,6 +87,15 @@ power_on(Config, InitialTarget) ->
 
     ok = ledc:fade_func_install(0),
 
+    % The duty written by channel_config only takes effect at the next PWM
+    % period (20 ms at 50 Hz), and the LEDC registers are reset after deep
+    % sleep. A hardware fade started before that reads the current output
+    % duty from the hardware (0) and ramps up from there: the servo first
+    % jumps to its minimum pulse end stop (beyond the interrupt position)
+    % before coming back. Wait one period so the resting duty is really
+    % applied before any fade can start.
+    timer:sleep(?SERVO_POWER_ON_SETTLE_MS),
+
     #state{
         pre_min = Duty,
         pre_max = Duty,
