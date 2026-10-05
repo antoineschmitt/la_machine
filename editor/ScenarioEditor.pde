@@ -775,6 +775,16 @@ void ScenariosUIInit(float x, float y, float w, float h) {
   gScen_y0 = y;
   gScen_w0 = w;
   gScen_h0 = h;
+  // ?? tmp : first meuh
+  /*
+  for (int i = 0; i < gScenarios.size(); i++) {
+      Scenario scenar = gScenarios.get(i);
+      if (scenar.name.startsWith("meuh")) {
+        gScen_scollIndex = i;
+        break;
+      }
+  }
+  */
 }
 
 void ScenariosChangeAllGameNames() {
@@ -1043,15 +1053,17 @@ void ScenariosMouseMoved() {
 }
 
 void ScenariosMouseWheel(float amount) {
+  if (amount == 0) return;
+  println("amount="+amount);
   if (amount < 0) {
       if (gScen_scollIndex > 0) {
-        gScen_scollIndex -= 1;
+        gScen_scollIndex -= -amount;
         return;
       }
   }
   if (amount > 0) {
       if (gScen_scollIndex < gScenarios.size() - 5) {
-        gScen_scollIndex += 1;
+        gScen_scollIndex += amount;
         return;
       }
   }
