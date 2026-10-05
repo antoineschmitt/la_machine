@@ -22,13 +22,21 @@ layout is:
 | phy_init   | `0x00F000`   | `0x001000`   |
 | factory    | `0x010000`   | `0x120000`   |
 | boot.avm   | `0x130000`   | `0x100000`   |
-| sounds     | `0x230000`   | `0xDD0000`   |
+| resets     | `0x230000`   | `0x040000`   |
+| sounds     | `0x270000`   | `0xD90000`   |
 
+- **nvs**: non-volatile storage, including the configuration and calibration
+  data written during self-test.
 - **factory**: AtomVM virtual machine with necessary codecs.
 - **boot.avm**: La Machine Erlang code packed with AtomVM libraries.
+- **resets**: log of resets (reset reason, wakeup cause, battery state).
 - **sounds**: sounds archive (`sounds.bin`) with a SHA1 integrity checksum
   appended. The code verifies at runtime that the sounds partition matches the
   compiled index.
+
+The authoritative layout is the partition table embedded in the image (at
+offset `0x8000`). If you change it, update this table and any script using
+hardcoded offsets.
 
 Flashing the full image
 -----------------------
@@ -63,24 +71,47 @@ full package [`atomvmlib.avm`](https://github.com/atomvm/AtomVM/releases/downloa
 only `estdlib.avm` and `eavmlib.avm`.
 
     rebar3 atomvm packbeam -p -e ~/Downloads/atomvmlib-v0.6.6.avm
-    rebar3 atomvm esp32_flash -p /dev/cu.usbmodem* -o 0x130000
+    esptool.py --chip esp32c3 --port /dev/cu.usbmodem* write_flash 0x130000 _build/default/lib/la_machine.avm
+
+The packed file must fit in the `boot.avm` partition (1 MB).
+
+If the Erlang code fails at boot with `undef` errors on AtomVM modules such as
+`esp_adc`, the code was flashed without the AtomVM libraries: check the `-e`
+option of `packbeam`.
 
 Updating the sounds
 -------------------
 
 The sounds partition can be reflashed independently:
 
-    esptool.py --chip esp32c3 --port /dev/cu.usbmodem* write_flash 0x230000 _build/generated/sounds.bin
+    esptool.py --chip esp32c3 --port /dev/cu.usbmodem* write_flash 0x270000 _build/generated/sounds.bin
 
 If you change the sound directory (add some, remove some or update any sound),
 the sound index will be rebuilt. The sound index is generated at compile time
 and included into the `la_machine.avm` file. So you need to flash both
 the sounds partition and the Erlang code.
 
+If La Machine crashes at boot with `{error, {checksum_mismatch, Found, Expected}}`,
+the sounds partition does not match the compiled index: reflash both the
+Erlang code and `sounds.bin`, from the same build and at the offsets above.
+
 Please note that La Machine code currently expects only MP3 sounds mono at
 44.1kHz or 48kHz. `scripts/build_assets.escript` script will check that. The
 virtual machine can play either MP3 or AAC sounds but you would need to make
 some change in the Erlang code.
+
+Redoing the calibration
+-----------------------
+
+To run self-test and calibration again without reflashing the whole image,
+erase the `nvs` partition, and optionally the `resets` partition to clear
+the reset log:
+
+    esptool.py --chip esp32c3 --port /dev/cu.usbmodem* erase_region 0x9000 0x6000
+    esptool.py --chip esp32c3 --port /dev/cu.usbmodem* erase_region 0x230000 0x40000
+
+Then follow [FLASHING-AND-CALIBRATION.md](FLASHING-AND-CALIBRATION.md) on next
+boot.
 
 Modifying the choreographies
 ----------------------------
